@@ -41,6 +41,10 @@
       cursor: pointer;
       transition: transform 0.2s, border-color 0.2s, background 0.2s;
       user-select: none;
+      /* Flexbox para centralizar todo o conteúdo do card */
+      display: flex;
+      flex-direction: column;
+      align-items: center; 
     }
 
     .card:hover {
@@ -53,21 +57,24 @@
       background: #0f3460;
     }
 
+    /* Ajuste na imagem para centralizar e padronizar */
     .foto {
-      width: 140px;
-      height: 140px;
-      object-fit: cover;
+      width: 160px;           /* Aumentei um pouco para ficar mais imponente */
+      height: 160px;          /* Força ser um quadrado perfeito */
+      object-fit: cover;      /* Corta as sobras sem distorcer o rosto */
+      object-position: center;/* Garante que o centro da foto fique no meio do círculo */
       border-radius: 50%;
-      border: 3px solid #00d4ff;
-      margin: 0 auto 15px auto;
+      border: 4px solid #00d4ff;
+      margin-bottom: 20px;
       display: block;
-      background: #0f3460;
+      background-color: #0f3460; /* Fundo escuro caso a imagem tenha transparência */
     }
 
     .nome {
       font-size: 20px;
       font-weight: bold;
       margin-bottom: 10px;
+      text-align: center;
     }
 
     .contador {
@@ -75,6 +82,7 @@
       font-size: 16px;
       color: #00ff88;
       font-weight: bold;
+      text-align: center;
     }
 
     .contador .numero {
@@ -87,6 +95,7 @@
       margin-top: 40px;
       font-size: 22px;
       min-height: 40px;
+      text-align: center;
     }
 
     @media (max-width: 600px) {
@@ -128,19 +137,16 @@
   <div id="resultado"></div>
 
   <script>
-    // Objeto com os votos de cada candidato
     let votos = {
       "Flavio Bolsonaro": 0,
       "Lula": 0
     };
 
-    // Mapa: nome do candidato -> id do elemento HTML
     const ids = {
       "Flavio Bolsonaro": "votos-flavio",
       "Lula": "votos-lula"
     };
 
-    // Ao carregar a página, recupera votos salvos no navegador
     (function carregarVotos() {
       const salvos = localStorage.getItem('votos');
       if (salvos) {
@@ -159,19 +165,10 @@
     })();
 
     function votar(nomeCandidato) {
-      // Soma +1 voto
       votos[nomeCandidato]++;
-
-      // Atualiza o contador na tela
-      document.getElementById(ids[nomeCandidato]).innerText =
-        votos[nomeCandidato];
-
-      // Salva no navegador
+      document.getElementById(ids[nomeCandidato]).innerText = votos[nomeCandidato];
       localStorage.setItem('votos', JSON.stringify(votos));
-
-      // Mostra mensagem de confirmação
-      document.getElementById('resultado').innerText =
-        `✅ Voto registrado em: ${nomeCandidato}`;
+      document.getElementById('resultado').innerText = `✅ Voto registrado em: ${nomeCandidato}`;
     }
   </script>
 
