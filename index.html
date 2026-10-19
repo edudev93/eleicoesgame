@@ -2,10 +2,16 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Tag essencial para celular não dar zoom e travar o layout -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Urna Eletrônica</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      -webkit-tap-highlight-color: transparent; /* Tira o azul de seleção no celular */
+    }
 
     body {
       font-family: Arial, sans-serif;
@@ -15,8 +21,8 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      padding: 20px;
-      gap: 24px;
+      padding: 15px;
+      gap: 20px;
     }
 
     /* ===== URNA ===== */
@@ -70,6 +76,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 1cqw;
       cursor: pointer;
       transition: .2s;
@@ -138,8 +145,9 @@
       padding: 1.6cqw 0;
       cursor: pointer;
       box-shadow: 0 2px 0 #111;
+      user-select: none;
     }
-    .tecla:active { transform: translateY(2px); box-shadow: none; }
+    .tecla:active { transform: translateY(2px); box-shadow: none; background: #1f2329; }
     .tecla.zero { grid-column: 2; }
 
     .acoes {
@@ -157,6 +165,7 @@
       padding: 1.6cqw 0;
       cursor: pointer;
       box-shadow: 0 2px 0 rgba(0,0,0,.5);
+      user-select: none;
     }
     .acao:active { transform: translateY(2px); box-shadow: none; }
     .branco    { background: #f2f2f2; color: #222; }
@@ -187,6 +196,7 @@
       transition: border .2s;
     }
     .candidato-info:hover { border-color: #007bff; }
+    .candidato-info:active { transform: scale(0.98); }
 
     .foto-mini { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; background: #ccc; }
     .candidato-texto h2 { font-size: 16px; color: #333; }
@@ -201,28 +211,66 @@
       flex: 1;
     }
 
-    @media (max-width: 600px) {
-      .painel-inferior { flex-direction: column; }
-      .candidato-info { width: 100%; justify-content: center; }
-      .urna { grid-template-columns: 1fr; }
-      .tela { min-height: 90cqw; }
-      .cand .nome { font-size: 4cqw; }
-      .cand .numero { font-size: 7cqw; }
-      .tela-titulo { font-size: 4cqw; }
-      .tela-msg { font-size: 3.5cqw; }
-      .display { font-size: 8cqw; min-height: 11cqw; }
-      .tecla { font-size: 5cqw; padding: 3cqw 0; }
-      .acao { font-size: 2.8cqw; padding: 3cqw 0; }
+    /* =========================================
+       📱 AJUSTES EXCLUSIVOS PARA CELULAR (Mobile)
+       ========================================= */
+    @media (max-width: 650px) {
+      body {
+        padding: 10px;
+        gap: 15px;
+      }
+
+      /* Muda a urna de lado-a-lado para cima-e-baixo */
+      .urna {
+        grid-template-columns: 1fr;
+        padding: 15px;
+        gap: 15px;
+      }
+
+      .tela {
+        min-height: 60vw; /* Tela mais quadrada no celular */
+      }
+
+      /* Aumenta os textos da tela azul para ficarem legíveis */
+      .tela-titulo { font-size: 4vw; text-align: center; }
+      .cand .nome { font-size: 3.5vw; }
+      .cand .numero { font-size: 6vw; }
+      .tela-msg { font-size: 3.5vw; }
+
+      /* Aumenta os botões do teclado para facilitar o toque (dedão) */
+      .display { font-size: 8vw; min-height: 12vw; }
+      .tecla { 
+        font-size: 6vw; 
+        padding: 4vw 0; 
+        border-radius: 8px;
+      }
+      .acao { 
+        font-size: 3.5vw; 
+        padding: 4vw 0; 
+        border-radius: 8px;
+      }
+      
+      /* Ajusta o painel de baixo */
+      .painel-inferior {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .candidato-info { 
+        width: 100%; 
+        justify-content: center; 
+        padding: 15px;
+      }
+      .foto-mini { width: 60px; height: 60px; }
+      .candidato-texto h2 { font-size: 18px; }
+      #resultado { margin-top: 10px; font-size: 20px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ===== URNA DESENHADA EM CSS ===== -->
   <div class="urna">
-
     <div class="tela">
-      <div class="tela-titulo">ELEIÇÕES 2028 — Escolha seu candidato</div>
+      <div class="tela-titulo">ELEIÇÕES 2028</div>
 
       <div class="candidatos">
         <div class="cand" id="cand-22" onclick="votar('Flavio Bolsonaro')">
@@ -238,7 +286,7 @@
         </div>
       </div>
 
-      <div class="tela-msg" id="tela-msg">Clique no candidato ou digite o número</div>
+      <div class="tela-msg" id="tela-msg">Digite o número ou clique na foto</div>
     </div>
 
     <div class="teclado">
@@ -265,7 +313,6 @@
     </div>
   </div>
 
-  <!-- ===== PAINEL COM CONTADORES ===== -->
   <div class="painel-inferior">
     <div class="candidato-info" onclick="votar('Flavio Bolsonaro')">
       <img class="foto-mini" src="img/flavio.png" alt="Flávio">
@@ -299,9 +346,14 @@
     const display  = document.getElementById('display');
     const telaMsg  = document.getElementById('tela-msg');
     const resultado = document.getElementById('resultado');
-    const MSG_PADRAO = 'Clique no candidato ou digite o número';
+    const MSG_PADRAO = 'Digite o número ou clique na foto';
 
-    // ---- carregar votos salvos ----
+    // Vibração para celular (se o aparelho suportar)
+    function vibrar(ms = 50) {
+      if (navigator.vibrate) navigator.vibrate(ms);
+    }
+
+    // Carregar votos salvos
     (function carregarVotos() {
       try {
         const salvos = localStorage.getItem('votos');
@@ -314,19 +366,18 @@
             }
           }
         }
-      } catch (e) {
-        console.warn('Erro ao carregar votos salvos:', e);
-      }
+      } catch (e) {}
     })();
 
-    // ---- teclado ----
     function digitar(n) {
+      vibrar(); // Vibra ao digitar
       if (digitado.length >= 2) return;
       digitado += n;
       atualizarDisplay();
     }
 
     function limpar() {
+      vibrar(); // Vibra ao limpar
       digitado = "";
       atualizarDisplay();
     }
@@ -339,7 +390,7 @@
 
       if (nome) {
         const card = document.getElementById('cand-' + digitado);
-        if (card) card.classList.add('sel'); // Correção de segurança
+        if (card) card.classList.add('sel'); 
         telaMsg.innerText = nome + ' — aperte CONFIRMA';
       } else if (digitado.length === 2) {
         telaMsg.innerText = 'NÚMERO ERRADO — aperte CORRIGE';
@@ -358,21 +409,20 @@
     function confirmar() {
       const nome = nomePorNumero(digitado);
       if (nome) votar(nome);
+      else vibrar(200); // Vibra mais forte se errar
     }
 
-    // ---- votação ----
     function votar(nomeCandidato) {
+      vibrar(100); // Vibra ao confirmar o voto
       const info = candidatos[nomeCandidato];
 
       votos[nomeCandidato]++;
       document.getElementById(info.idVotos).innerText = votos[nomeCandidato];
       try { localStorage.setItem('votos', JSON.stringify(votos)); } catch (e) {}
 
-      // feedback visual na tela azul
       document.querySelectorAll('.cand').forEach(c => c.classList.remove('sel', 'ok'));
-      
       const cardVotado = document.getElementById('cand-' + info.numero);
-      if (cardVotado) cardVotado.classList.add('ok'); // Correção de segurança
+      if (cardVotado) cardVotado.classList.add('ok');
       
       telaMsg.innerText = 'FIM — voto em ' + nomeCandidato;
       resultado.innerText = '✅ Voto confirmado!';
@@ -387,6 +437,23 @@
         resultado.innerText = '';
       }, 3000);
     }
+
+    // 🖥️ ATALHOS DE TECLADO PARA COMPUTADOR
+    document.addEventListener('keydown', function(event) {
+      // Se a tecla for um número de 0 a 9
+      if (event.key >= '0' && event.key <= '9') {
+        digitar(event.key);
+      }
+      // Se for Enter, confirma
+      else if (event.key === 'Enter') {
+        confirmar();
+      }
+      // Se for Backspace (apagar) ou Escape, corrige
+      else if (event.key === 'Backspace' || event.key === 'Escape') {
+        event.preventDefault();
+        limpar();
+      }
+    });
   </script>
 
 </body>
