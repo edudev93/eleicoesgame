@@ -18,7 +18,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start; /* Mudou de center para flex-start para permitir rolagem no celular */
       min-height: 100vh;
       padding: 15px;
       gap: 20px;
@@ -37,6 +37,8 @@
       border-radius: 16px;
       box-shadow: 0 12px 30px rgba(0,0,0,.25), inset 0 2px 0 #fff;
       border: 1px solid #bbb;
+      margin-top: auto; /* Centraliza verticalmente no PC */
+      margin-bottom: auto;
     }
 
     /* ===== TELA AZUL ===== */
@@ -86,21 +88,29 @@
     .cand.sel   { border-color: #ffe600; background: rgba(255,255,255,.25); }
     .cand.ok    { border-color: #3ddc4a; background: rgba(61,220,74,.3); }
 
-    .cand img {
+    /* Quadro da foto */
+    .foto-wrapper {
       width: 100%;
-      height: 100%;
       aspect-ratio: 1 / 1;
-      object-fit: contain;
-      object-position: center;
-      border: 2px solid #fff;
       background: #222;
+      border: 2px solid #fff;
       border-radius: 4px;
+      overflow: hidden; /* Impede que o zoom vaze para fora do quadro */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* 🟢 AQUI ESTÁ O SEGREDO: Zoom na imagem do Flávio para igualar ao Lula 🟢 */
-    #cand-22 img {
-      transform: scale(1.15); /* Aumenta a imagem em 15% */
-      transform-origin: center; /* Garante que o zoom seja do centro */
+    .foto-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* Mantém a foto inteira */
+      object-position: center;
+    }
+
+    /* Zoom na imagem do Flávio */
+    #cand-22 .foto-wrapper img {
+      transform: scale(1.15); 
     }
 
     .cand .nome   { font-size: 2.3cqw; font-weight: bold; line-height: 1.1; }
@@ -187,6 +197,7 @@
       max-width: 800px;
       padding: 0 10px;
       gap: 12px;
+      margin-bottom: auto;
     }
 
     .candidato-info {
@@ -212,7 +223,6 @@
       background: #222; 
     }
     
-    /* Zoom também na mini foto do Flávio */
     .candidato-info:first-child .foto-mini {
       transform: scale(1.15);
     }
@@ -236,22 +246,26 @@
       body {
         padding: 10px;
         gap: 15px;
+        justify-content: flex-start;
       }
 
       .urna {
         grid-template-columns: 1fr;
         padding: 15px;
         gap: 15px;
+        margin-top: 0;
+        margin-bottom: 0;
       }
 
+      /* Aumenta a tela para as fotos ficarem grandes */
       .tela {
-        min-height: 70vw;
+        min-height: 95vw; 
       }
 
-      .tela-titulo { font-size: 4vw; text-align: center; }
-      .cand .nome { font-size: 3.5vw; }
-      .cand .numero { font-size: 6vw; }
-      .tela-msg { font-size: 3.5vw; }
+      .tela-titulo { font-size: 4.5vw; text-align: center; }
+      .cand .nome { font-size: 4vw; }
+      .cand .numero { font-size: 7vw; }
+      .tela-msg { font-size: 4vw; margin-top: 5px; }
 
       .display { font-size: 8vw; min-height: 12vw; }
       .tecla { 
@@ -268,6 +282,7 @@
       .painel-inferior {
         flex-direction: column;
         gap: 15px;
+        margin-bottom: 20px;
       }
       .candidato-info { 
         width: 100%; 
@@ -288,13 +303,17 @@
 
       <div class="candidatos">
         <div class="cand" id="cand-22" onclick="votar('Flavio Bolsonaro')">
-          <img src="img/flavio.png" alt="Flávio Bolsonaro">
+          <div class="foto-wrapper">
+            <img src="img/flavio.png" alt="Flávio Bolsonaro">
+          </div>
           <div class="nome">Flavio Bolsonaro</div>
           <div class="numero">22</div>
         </div>
 
         <div class="cand" id="cand-13" onclick="votar('Lula')">
-          <img src="img/lula.png" alt="Lula">
+          <div class="foto-wrapper">
+            <img src="img/lula.png" alt="Lula">
+          </div>
           <div class="nome">Lula</div>
           <div class="numero">13</div>
         </div>
