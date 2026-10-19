@@ -8,7 +8,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
     body { font-family: Arial, sans-serif; background: #2c3e50; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; padding: 15px; gap: 15px; overflow-x: hidden; }
     
-    /* ===== TELA DE ENTRADA (NOME E ESTADO) ===== */
+    /* ===== TELA DE ENTRADA (LOGIN) ===== */
     .tela-login {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: #2c3e50; z-index: 1000;
@@ -17,11 +17,10 @@
     }
     .tela-login h1 { font-size: 28px; margin-bottom: 10px; color: #f1c40f; }
     .tela-login p { font-size: 16px; margin-bottom: 20px; color: #ccc; }
-    .tela-login input, .tela-login select {
+    .tela-login input {
       padding: 15px; font-size: 18px; border-radius: 8px; border: none; width: 100%; max-width: 300px; margin-bottom: 15px; text-align: center;
       background: #fff; color: #333;
     }
-    .tela-login select { cursor: pointer; }
     .tela-login button {
       padding: 15px 40px; font-size: 18px; font-weight: bold; background: #2ecc71; color: #000; border: none; border-radius: 8px; cursor: pointer; width: 100%; max-width: 300px;
       transition: 0.2s;
@@ -34,9 +33,7 @@
     .hud .pontos { color: #2ecc71; }
     
     /* BOTÃO ENCERRAR */
-    .btn-encerrar {
-      background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 14px;
-    }
+    .btn-encerrar { background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 14px; }
     .btn-encerrar:hover { background: #c0392b; }
 
     /* ===== URNA ===== */
@@ -71,17 +68,15 @@
     .ranking-container .pts { font-weight: bold; color: #2ecc71; background: #e8f8f5; padding: 4px 10px; border-radius: 20px; }
 
     /* ===== TELA DE VOTAÇÃO ENCERRADA ===== */
-    .tela-encerrada {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.95); z-index: 2000;
-      display: none; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; padding: 20px;
-    }
+    .tela-encerrada { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; padding: 20px; }
     .tela-encerrada h1 { font-size: 40px; color: #e74c3c; margin-bottom: 10px; }
     .tela-encerrada p { font-size: 18px; margin-bottom: 30px; }
-    .tela-encerrada .ranking-box {
-      background: #2c3e50; border-radius: 12px; padding: 20px; width: 100%; max-width: 400px; text-align: left; max-height: 50vh; overflow-y: auto;
-    }
+    .tela-encerrada .ranking-box { background: #2c3e50; border-radius: 12px; padding: 20px; width: 100%; max-width: 400px; text-align: left; max-height: 40vh; overflow-y: auto; margin-bottom: 20px; }
     .tela-encerrada .ranking-box li { padding: 10px; border-bottom: 1px solid #444; display: flex; justify-content: space-between; font-size: 18px;}
+    
+    /* BOTÃO VOTAR NOVAMENTE */
+    .btn-votar-novamente { background: #2ecc71; color: #000; font-size: 18px; font-weight: bold; padding: 15px 40px; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); transition: 0.2s; }
+    .btn-votar-novamente:hover { background: #27ae60; transform: scale(1.05); }
 
     @media (max-width: 650px) {
       .hud { font-size: 16px; padding: 10px 15px; justify-content: center; }
@@ -100,37 +95,7 @@
     <p>Preencha seus dados para entrar no Ranking:</p>
     
     <input type="text" id="input-nome" placeholder="Seu nome ou apelido" maxlength="15">
-    
-    <select id="select-estado">
-      <option value="">Selecione seu Estado...</option>
-      <option value="AC">Acre (AC)</option>
-      <option value="AL">Alagoas (AL)</option>
-      <option value="AP">Amapá (AP)</option>
-      <option value="AM">Amazonas (AM)</option>
-      <option value="BA">Bahia (BA)</option>
-      <option value="CE">Ceará (CE)</option>
-      <option value="DF">Distrito Federal (DF)</option>
-      <option value="ES">Espírito Santo (ES)</option>
-      <option value="GO">Goiás (GO)</option>
-      <option value="MA">Maranhão (MA)</option>
-      <option value="MT">Mato Grosso (MT)</option>
-      <option value="MS">Mato Grosso do Sul (MS)</option>
-      <option value="MG">Minas Gerais (MG)</option>
-      <option value="PA">Pará (PA)</option>
-      <option value="PB">Paraíba (PB)</option>
-      <option value="PR">Paraná (PR)</option>
-      <option value="PE">Pernambuco (PE)</option>
-      <option value="PI">Piauí (PI)</option>
-      <option value="RJ">Rio de Janeiro (RJ)</option>
-      <option value="RN">Rio Grande do Norte (RN)</option>
-      <option value="RS">Rio Grande do Sul (RS)</option>
-      <option value="RO">Rondônia (RO)</option>
-      <option value="RR">Roraima (RR)</option>
-      <option value="SC">Santa Catarina (SC)</option>
-      <option value="SP">São Paulo (SP)</option>
-      <option value="SE">Sergipe (SE)</option>
-      <option value="TO">Tocantins (TO)</option>
-    </select>
+    <input type="text" id="input-local" placeholder="De onde você está votando? (Ex: SP, Rio, Portugal...)" maxlength="20">
 
     <button onclick="entrarNoJogo()">ENTRAR E VOTAR</button>
   </div>
@@ -138,20 +103,20 @@
   <!-- TELA DE VOTAÇÃO ENCERRADA -->
   <div class="tela-encerrada" id="tela-encerrada">
     <h1>🚫 VOTAÇÃO ENCERRADA</h1>
-    <p>A urna foi fechada. Confira o resultado final:</p>
+    <p>A urna foi fechada. Confira o resultado:</p>
     <div class="ranking-box">
       <h2 style="text-align: center; color: #f1c40f; margin-bottom: 15px;">🏆 Resultado Final</h2>
-      <ul id="ranking-final" style="list-style: none;">
-        <!-- Preenchido via JS -->
-      </ul>
+      <ul id="ranking-final" style="list-style: none;"></ul>
     </div>
+    
+    <!-- NOVO BOTÃO -->
+    <button class="btn-votar-novamente" onclick="reabrirVotacao()">VOTAR NOVAMENTE</button>
   </div>
 
   <!-- HUD -->
   <div class="hud">
     <div class="jogador">👤 <span id="nome-jogador">Visitante</span></div>
     <div class="pontos">🗳️ Votos: <span id="pontos">0</span></div>
-    <!-- BOTÃO ENCERRAR -->
     <button class="btn-encerrar" onclick="encerrarVotacao()">ENCERRAR VOTAÇÃO</button>
   </div>
 
@@ -201,7 +166,7 @@
   <!-- FIREBASE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-    import { getDatabase, ref, set, onValue, query, orderByChild, limitToLast, get } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
+    import { getDatabase, ref, set, onValue, query, orderByChild, limitToLast, get, remove } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyC7vYemf1hXvd4Gz0QAH4v51fTFTsY6vXs",
@@ -216,16 +181,15 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Variáveis do Jogo
     const candidatos = { "Flavio Bolsonaro": { numero: "22" }, "Lula": { numero: "13" } };
     let digitado = "";
     let pontos = 0;
     let nomeJogador = "";
-    let estadoJogador = "";
+    let localJogador = "";
     let idJogador = ""; 
-    let jogoAtivo = true; // Controla se a urna aceita votos
+    let jogoAtivo = true; 
 
-    // Verifica em tempo real se a votação foi encerrada por alguém
+    // Verifica em tempo real se a votação foi encerrada
     onValue(ref(db, 'status_votacao'), (snapshot) => {
       const status = snapshot.val();
       if (status && status.encerrada === true) {
@@ -242,23 +206,22 @@
     // --- TELA DE LOGIN ---
     window.entrarNoJogo = function() {
       const nomeInput = document.getElementById('input-nome').value.trim();
-      const estadoInput = document.getElementById('select-estado').value;
+      const localInput = document.getElementById('input-local').value.trim();
       
       if (nomeInput === "") {
         alert("Por favor, digite um nome para entrar no ranking!");
         return;
       }
-      if (estadoInput === "") {
-        alert("Por favor, selecione o seu Estado!");
+      if (localInput === "") {
+        alert("Por favor, diga de onde você está votando!");
         return;
       }
       
       nomeJogador = nomeInput;
-      estadoJogador = estadoInput;
+      localJogador = localInput;
+      idJogador = (nomeJogador + "_" + localJogador).toLowerCase().replace(/[^a-z0-9]/g, "_");
       
-      idJogador = (nomeJogador + "_" + estadoJogador).toLowerCase().replace(/[^a-z0-9]/g, "_");
-      
-      document.getElementById('nome-jogador').innerText = nomeJogador + " (" + estadoJogador + ")";
+      document.getElementById('nome-jogador').innerText = nomeJogador + " (" + localJogador + ")";
       document.getElementById('tela-login').style.display = "none";
       
       carregarMeusVotos();
@@ -270,7 +233,7 @@
 
     // --- LÓGICA DE VOTAÇÃO ---
     window.votar = function(nomeCandidato) {
-      if (!jogoAtivo) return; // Bloqueia se encerrado
+      if (!jogoAtivo) return;
       
       if (navigator.vibrate) navigator.vibrate(40); 
       
@@ -334,12 +297,26 @@
       else if (navigator.vibrate) navigator.vibrate(100); 
     }
 
-    // --- ENCERRAR VOTAÇÃO ---
+    // --- ENCERRAR / REABRIR VOTAÇÃO ---
     window.encerrarVotacao = function() {
       const confirmar = window.confirm("Tem certeza que deseja ENCERRAR a votação? Ninguém mais poderá votar!");
       if (confirmar) {
-        // Salva no banco que a votação está encerrada
         set(ref(db, 'status_votacao'), { encerrada: true });
+      }
+    }
+
+    window.reabrirVotacao = function() {
+      const confirmar = window.confirm("Deseja reabrir a votação para todos? Os votos já dados serão mantidos!");
+      if (confirmar) {
+        // Remove o status de encerrado, o que reativa a urna para todos em tempo real
+        remove(ref(db, 'status_votacao')).then(() => {
+          // Quando a votação reabrir, se o jogador atual já tiver um nome, 
+          // a tela de login não precisa aparecer de novo.
+          document.getElementById('tela-encerrada').style.display = "none";
+          if (nomeJogador) {
+             document.getElementById('nome-jogador').innerText = nomeJogador + " (" + localJogador + ")";
+          }
+        });
       }
     }
 
@@ -348,7 +325,7 @@
       if (!idJogador || !jogoAtivo) return;
       set(ref(db, 'ranking/' + idJogador), {
         nome: nomeJogador,
-        estado: estadoJogador,
+        local: localJogador,
         votos: pontos
       });
     }
@@ -389,7 +366,7 @@
           <span>
             <span class="pos">${index + 1}º</span> 
             ${jogador.nome} 
-            <span class="estado-tag">${jogador.estado}</span>
+            <span class="estado-tag">${jogador.local}</span>
           </span> 
           <span class="pts">${jogador.votos} votos</span>
         `;
@@ -397,7 +374,7 @@
       });
     });
 
-    // --- RESULTADO FINAL (TELA ENCERRADA) ---
+    // --- RESULTADO FINAL ---
     function carregarResultadoFinal() {
       const listaFinal = document.getElementById('ranking-final');
       get(rankingRef).then((snapshot) => {
@@ -413,7 +390,7 @@
 
         rankingArray.forEach((jogador, index) => {
           const li = document.createElement("li");
-          li.innerHTML = `<span>${index + 1}º - ${jogador.nome} (${jogador.estado})</span> <strong>${jogador.votos}</strong>`;
+          li.innerHTML = `<span>${index + 1}º - ${jogador.nome} (${jogador.local})</span> <strong>${jogador.votos}</strong>`;
           listaFinal.appendChild(li);
         });
       });
