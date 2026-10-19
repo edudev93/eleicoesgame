@@ -13,128 +13,118 @@
 
     body {
       font-family: Arial, sans-serif;
-      background: #1a1a2e;
-      color: white;
-      text-align: center;
-      padding: 40px 20px;
-      min-height: 100vh;
-    }
-
-    h1 {
-      margin-bottom: 40px;
-      font-size: 28px;
-    }
-
-    .candidatos {
+      background: #e0e0e0; /* Fundo cinza claro para destacar a urna branca */
       display: flex;
       justify-content: center;
-      gap: 40px;
-      flex-wrap: wrap;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
     }
 
-    .card {
-      background: #16213e;
-      border: 3px solid #444;
-      border-radius: 16px;
-      padding: 30px 20px;
-      width: 240px;
+    /* Container que segura a imagem e os botões sobrepostos */
+    .urna-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px; /* Tamanho máximo da urna na tela */
+    }
+
+    .imagem-urna {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    /* 
+      Áreas clicáveis invisíveis 
+      Você pode ajustar o top, left, width e height em % para encaixar perfeitamente na sua imagem.
+      Fiz uma estimativa baseada na imagem que você enviou.
+    */
+    .botao-voto {
+      position: absolute;
       cursor: pointer;
-      transition: transform 0.2s, border-color 0.2s, background 0.2s;
-      user-select: none;
-      /* Flexbox para centralizar todo o conteúdo do card */
+      transition: background 0.2s;
+      border-radius: 8px;
       display: flex;
       flex-direction: column;
-      align-items: center; 
-    }
-
-    .card:hover {
-      transform: scale(1.05);
-      border-color: #00d4ff;
-    }
-
-    .card:active {
-      transform: scale(0.97);
-      background: #0f3460;
-    }
-
-    /* Ajuste na imagem para centralizar e padronizar */
-    .foto {
-      width: 160px;           /* Aumentei um pouco para ficar mais imponente */
-      height: 160px;          /* Força ser um quadrado perfeito */
-      object-fit: cover;      /* Corta as sobras sem distorcer o rosto */
-      object-position: center;/* Garante que o centro da foto fique no meio do círculo */
-      border-radius: 50%;
-      border: 4px solid #00d4ff;
-      margin-bottom: 20px;
-      display: block;
-      background-color: #0f3460; /* Fundo escuro caso a imagem tenha transparência */
-    }
-
-    .nome {
-      font-size: 20px;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
       font-weight: bold;
-      margin-bottom: 10px;
-      text-align: center;
     }
 
-    .contador {
-      margin-top: 15px;
-      font-size: 16px;
-      color: #00ff88;
-      font-weight: bold;
-      text-align: center;
+    /* Área da Tela Azul (Flávio) */
+    .area-tela {
+      top: 38%;
+      left: 13%;
+      width: 33%;
+      height: 40%;
     }
 
-    .contador .numero {
-      font-size: 28px;
-      display: block;
-      color: #00d4ff;
+    /* Área do Teclado (Lula) */
+    .area-teclado {
+      top: 38%;
+      left: 58%;
+      width: 25%;
+      height: 40%;
+    }
+
+    .botao-voto:hover {
+      background: rgba(255, 255, 255, 0.15); /* Brilho sutil ao passar o mouse */
+      border: 2px dashed rgba(255,255,255,0.5);
+    }
+
+    /* Contador que aparece em cima do botão */
+    .contador-oculto {
+      position: absolute;
+      bottom: -40px; /* Joga o contador para baixo da urna para não tampar a imagem */
+      font-size: 18px;
+      color: #333;
+      text-shadow: none;
+      width: 100%;
+      text-align: center;
+      white-space: nowrap;
     }
 
     #resultado {
-      margin-top: 40px;
-      font-size: 22px;
-      min-height: 40px;
+      position: absolute;
+      bottom: -80px;
+      width: 100%;
       text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      color: #1a1a2e;
     }
 
+    /* Responsividade para celular */
     @media (max-width: 600px) {
-      .candidatos {
-        gap: 20px;
-      }
-      .card {
-        width: 100%;
-        max-width: 300px;
-      }
-      h1 {
-        font-size: 22px;
-      }
+      .contador-oculto { font-size: 12px; bottom: -30px; }
+      #resultado { font-size: 16px; bottom: -60px; }
     }
   </style>
 </head>
 <body>
 
-  <h1>🗳️ Vote no seu candidato</h1>
+  <div class="urna-container">
+    <!-- Aqui entra a sua imagem (lembre-se de salvar como urna.png na pasta img) -->
+    <img class="imagem-urna" src="img/urna.png" alt="Urna Eletrônica">
 
-  <div class="candidatos">
-    <div class="card" onclick="votar('Flavio Bolsonaro')">
-      <img class="foto" src="img/flavio.png" alt="Flavio Bolsonaro">
-      <div class="nome">Flavio Bolsonaro</div>
-      <div class="contador">
-        Votos: <span class="numero" id="votos-flavio">0</span>
-      </div>
+    <!-- Área clicável em cima da Tela Azul -->
+    <div class="botao-voto area-tela" onclick="votar('Flavio Bolsonaro')">
+      <!-- Contador exibido logo abaixo da urna -->
+      <div class="contador-oculto">Votos Flávio: <span id="votos-flavio" style="color: #00d4ff;">0</span></div>
     </div>
 
-    <div class="card" onclick="votar('Lula')">
-      <img class="foto" src="img/lula.png" alt="Lula">
-      <div class="nome">Lula</div>
-      <div class="contador">
-        Votos: <span class="numero" id="votos-lula">0</span>
-      </div>
+    <!-- Área clicável em cima do Teclado -->
+    <div class="botao-voto area-teclado" onclick="votar('Lula')">
+      <div class="contador-oculto">Votos Lula: <span id="votos-lula" style="color: #00ff88;">0</span></div>
     </div>
+
+    <!-- Mensagem de confirmação -->
+    <div id="resultado"></div>
   </div>
-
-  <div id="resultado"></div>
 
   <script>
     let votos = {
@@ -168,7 +158,12 @@
       votos[nomeCandidato]++;
       document.getElementById(ids[nomeCandidato]).innerText = votos[nomeCandidato];
       localStorage.setItem('votos', JSON.stringify(votos));
-      document.getElementById('resultado').innerText = `✅ Voto registrado em: ${nomeCandidato}`;
+      
+      let msg = document.getElementById('resultado');
+      msg.innerText = `✅ Voto computado para: ${nomeCandidato}`;
+      
+      // Efeito para a mensagem sumir depois de 2 segundos
+      setTimeout(() => { msg.innerText = ''; }, 2000);
     }
   </script>
 
