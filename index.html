@@ -13,7 +13,7 @@
 
     body {
       font-family: Arial, sans-serif;
-      background: #e0e0e0; /* Fundo cinza claro */
+      background: #e0e0e0;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -22,12 +22,11 @@
       padding: 20px;
     }
 
-    /* Área da Urna */
+    /* Container principal da urna */
     .urna-container {
       position: relative;
       width: 100%;
       max-width: 800px;
-      margin-bottom: 30px;
     }
 
     .imagem-urna {
@@ -38,130 +37,165 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
+    /* Foto do candidato que vai aparecer na tela da urna */
+    #foto-urna {
+      position: absolute;
+      /* Posição exata do bonequinho cinza na tela azul */
+      top: 38.5%; 
+      left: 14.5%;
+      width: 15.5%;
+      height: 38%;
+      object-fit: cover; /* Recorta a foto para caber no espaço */
+      border-radius: 4px;
+      display: none; /* Começa escondida */
+      z-index: 10;
+      border: 1px solid #fff;
+    }
+
+    /* Nome do candidato que aparece na tela da urna */
+    #nome-urna {
+      position: absolute;
+      top: 44%;
+      left: 33%;
+      width: 25%;
+      color: white;
+      font-size: 1.2vw; /* Ajusta o tamanho conforme a tela */
+      font-weight: bold;
+      text-align: left;
+      line-height: 1.1;
+      display: none; /* Começa escondido */
+      z-index: 10;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+
     /* Botões invisíveis sobre a urna */
     .botao-voto {
       position: absolute;
       cursor: pointer;
       transition: background 0.2s;
       border-radius: 8px;
+      z-index: 5;
     }
 
-    /* Área da Tela Azul (Flávio) */
+    /* Área de clique da Tela Azul (Flávio) */
     .area-tela {
-      top: 22%;
-      left: 16%;
-      width: 41%;
-      height: 50%;
+      top: 20%;
+      left: 14%;
+      width: 42%;
+      height: 55%;
     }
 
-    /* Área do Teclado (Lula) */
+    /* Área de clique do Teclado (Lula) */
     .area-teclado {
       top: 25%;
       left: 58%;
       width: 25%;
-      height: 40%;
+      height: 45%;
     }
 
-    /* Efeito ao passar o mouse para você ver onde está clicando */
+    /* Efeito de hover (opcional, só para ver onde está clicando) */
     .botao-voto:hover {
-      background: rgba(255, 255, 255, 0.2);
-      border: 2px dashed rgba(0,0,0,0.3);
+      background: rgba(255, 255, 255, 0.1);
     }
 
-    /* Seção dos Candidatos (Abaixo da urna) */
-    .candidatos-fotos {
+    /* Área abaixo da urna para as fotos e contadores */
+    .painel-inferior {
       display: flex;
-      justify-content: center;
-      gap: 60px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-
-    .candidato {
-      display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      cursor: pointer;
-      transition: transform 0.2s;
+      width: 100%;
+      max-width: 800px;
+      margin-top: 20px;
+      padding: 0 20px;
     }
 
-    .candidato:hover {
-      transform: scale(1.05);
-    }
-
-    .foto {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
+    .candidato-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: #fff;
+      padding: 15px;
       border-radius: 12px;
-      border: 4px solid #444;
-      margin-bottom: 10px;
-      background-color: #ccc;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      cursor: pointer;
     }
 
-    .nome {
-      font-size: 18px;
-      font-weight: bold;
-      color: #333;
+    .foto-mini {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
     }
 
-    .contador {
+    .candidato-texto h2 {
       font-size: 16px;
-      font-weight: bold;
-      color: #1a1a2e;
-      margin-top: 5px;
+      color: #333;
+      margin-bottom: 5px;
     }
 
-    .contador span {
-      font-size: 22px;
+    .candidato-texto p {
+      font-size: 14px;
+      color: #666;
+      font-weight: bold;
+    }
+    
+    .candidato-texto span {
       color: #007bff;
+      font-size: 18px;
     }
 
     #resultado {
-      margin-top: 30px;
-      font-size: 22px;
+      margin-top: 20px;
+      font-size: 20px;
       font-weight: bold;
       color: #00aa00;
       min-height: 30px;
+      text-align: center;
     }
 
-    /* Responsividade para celular */
+    /* Ajustes para celular */
     @media (max-width: 600px) {
-      .candidatos-fotos { gap: 30px; }
-      .foto { width: 90px; height: 90px; }
-      .nome { font-size: 14px; }
+      #nome-urna { font-size: 8px; }
+      .painel-inferior { flex-direction: column; gap: 15px; }
+      .candidato-info { width: 100%; justify-content: center; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Área da Urna com os botões clicáveis invisíveis -->
   <div class="urna-container">
+    <!-- Imagem de fundo da urna -->
     <img class="imagem-urna" src="img/urna.png" alt="Urna Eletrônica">
     
-    <!-- Botão invisível na tela da urna -->
-    <div class="botao-voto area-tela" onclick="votar('Flavio Bolsonaro')" title="Votar em Flávio"></div>
-    
-    <!-- Botão invisível no teclado da urna -->
-    <div class="botao-voto area-teclado" onclick="votar('Lula')" title="Votar em Lula"></div>
+    <!-- FOTO E NOME QUE APARECEM NA TELA DA URNA -->
+    <img id="foto-urna" src="" alt="Foto do Candidato">
+    <div id="nome-urna"></div>
+
+    <!-- Áreas clicáveis -->
+    <div class="botao-voto area-tela" onclick="votar('Flavio Bolsonaro', 'img/flavio.png')" title="Votar em Flávio"></div>
+    <div class="botao-voto area-teclado" onclick="votar('Lula', 'img/lula.png')" title="Votar em Lula"></div>
   </div>
 
-  <!-- Fotos e contadores visíveis abaixo da urna -->
-  <div class="candidatos-fotos">
-    <div class="candidato" onclick="votar('Flavio Bolsonaro')">
-      <img class="foto" src="img/flavio.png" alt="Flavio Bolsonaro">
-      <div class="nome">Flavio Bolsonaro</div>
-      <div class="contador">Votos: <span id="votos-flavio">0</span></div>
+  <!-- Painel de controle abaixo da urna -->
+  <div class="painel-inferior">
+    <div class="candidato-info" onclick="votar('Flavio Bolsonaro', 'img/flavio.png')">
+      <img class="foto-mini" src="img/flavio.png" alt="Flávio">
+      <div class="candidato-texto">
+        <h2>Flavio Bolsonaro</h2>
+        <p>Votos: <span id="votos-flavio">0</span></p>
+      </div>
     </div>
 
-    <div class="candidato" onclick="votar('Lula')">
-      <img class="foto" src="img/lula.png" alt="Lula">
-      <div class="nome">Lula</div>
-      <div class="contador">Votos: <span id="votos-lula">0</span></div>
+    <div id="resultado"></div>
+
+    <div class="candidato-info" onclick="votar('Lula', 'img/lula.png')">
+      <img class="foto-mini" src="img/lula.png" alt="Lula">
+      <div class="candidato-texto">
+        <h2>Lula</h2>
+        <p>Votos: <span id="votos-lula">0</span></p>
+      </div>
     </div>
   </div>
-
-  <div id="resultado"></div>
 
   <script>
     let votos = {
@@ -174,6 +208,7 @@
       "Lula": "votos-lula"
     };
 
+    // Carrega os votos salvos
     (function carregarVotos() {
       const salvos = localStorage.getItem('votos');
       if (salvos) {
@@ -191,15 +226,34 @@
       }
     })();
 
-    function votar(nomeCandidato) {
+    function votar(nomeCandidato, caminhoFoto) {
+      // 1. Soma o voto
       votos[nomeCandidato]++;
       document.getElementById(ids[nomeCandidato]).innerText = votos[nomeCandidato];
+      
+      // 2. Salva no navegador
       localStorage.setItem('votos', JSON.stringify(votos));
       
-      let msg = document.getElementById('resultado');
-      msg.innerText = `✅ Voto computado para: ${nomeCandidato}`;
+      // 3. Faz a foto e o nome aparecerem na tela da urna
+      const foto = document.getElementById('foto-urna');
+      const nome = document.getElementById('nome-urna');
       
-      setTimeout(() => { msg.innerText = ''; }, 2000);
+      foto.src = caminhoFoto;
+      foto.style.display = 'block';
+      
+      nome.innerText = nomeCandidato;
+      nome.style.display = 'block';
+      
+      // 4. Mostra mensagem de sucesso
+      let msg = document.getElementById('resultado');
+      msg.innerText = `✅ Voto: ${nomeCandidato}`;
+      
+      // 5. Depois de 3 segundos, "limpa" a tela da urna (esconde a foto)
+      setTimeout(() => {
+        foto.style.display = 'none';
+        nome.style.display = 'none';
+        msg.innerText = '';
+      }, 3000);
     }
   </script>
 
