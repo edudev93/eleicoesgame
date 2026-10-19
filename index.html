@@ -28,13 +28,27 @@
     .tela { background: linear-gradient(180deg, #4a90d9, #1f5fb8); border: 3px solid #0b3d8a; border-radius: 6px; padding: 2.5cqw; color: #fff; display: flex; flex-direction: column; gap: 2cqw; min-height: 46cqw; }
     .tela-titulo { font-size: 2.6cqw; font-weight: bold; letter-spacing: .5px; border-bottom: 1px solid rgba(255,255,255,.4); padding-bottom: 1cqw; }
     .candidatos { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 2cqw; }
-    .cand { background: rgba(0,0,0,.18); border: 2px solid transparent; border-radius: 6px; padding: 1.5cqw; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1cqw; cursor: pointer; transition: .1s; text-align: center; }
-    .cand:active { transform: scale(0.95); } .cand.sel { border-color: #ffe600; background: rgba(255,255,255,.25); } .cand.ok { border-color: #3ddc4a; background: rgba(61,220,74,.3); }
+    
+    /* ESTILOS BASE DOS CANDIDATOS */
+    .cand { border: 3px solid transparent; border-radius: 8px; padding: 1.5cqw; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1cqw; cursor: pointer; transition: all .2s; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    .cand:active { transform: scale(0.95); } 
     .foto-wrapper { width: 100%; aspect-ratio: 1 / 1; background: #222; border: 2px solid #fff; border-radius: 4px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
     .foto-wrapper img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
     #cand-22 .foto-wrapper img { transform: scale(1.15); }
-    .cand .nome { font-size: 2.3cqw; font-weight: bold; line-height: 1.1; } .cand .numero { font-size: 4cqw; font-weight: bold; line-height: 1; }
-    .tela-msg { font-size: 2cqw; min-height: 3cqw; text-align: center; }
+    .cand .nome { font-size: 2.3cqw; font-weight: bold; line-height: 1.1; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); } 
+    .cand .numero { font-size: 4cqw; font-weight: bold; line-height: 1; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
+
+    /* CORES FLÁVIO (VERDE E AMARELO) */
+    #cand-22 { background: linear-gradient(135deg, #006400, #228B22, #FFD700); border-color: #FFD700; }
+    #cand-22.sel { border-color: #FFFF00; box-shadow: 0 0 15px #FFD700; }
+    #cand-22.ok { border-color: #00FF00; box-shadow: 0 0 20px #00FF00; }
+
+    /* CORES LULA (VERMELHO) */
+    #cand-13 { background: linear-gradient(135deg, #8B0000, #e74c3c, #c0392b); border-color: #ff9999; }
+    #cand-13.sel { border-color: #ff4d4d; box-shadow: 0 0 15px #e74c3c; }
+    #cand-13.ok { border-color: #ff0000; box-shadow: 0 0 20px #ff0000; }
+
+    .tela-msg { font-size: 2cqw; min-height: 3cqw; text-align: center; font-weight: bold; }
     .teclado { background: #2b3340; border-radius: 8px; padding: 2cqw; display: flex; flex-direction: column; gap: 1.5cqw; box-shadow: inset 0 2px 8px rgba(0,0,0,.6); }
     .display { background: #cfd8e3; color: #111; border-radius: 4px; text-align: center; font-size: 4.5cqw; font-weight: bold; letter-spacing: 1cqw; padding: .8cqw; min-height: 6cqw; }
     .grade { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2cqw; }
@@ -52,9 +66,9 @@
     /* Placar Geral (Candidatos) */
     .placar-candidato { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; font-size: 18px; font-weight: bold; color: #333; }
     .placar-candidato .nome-cand { display: flex; align-items: center; gap: 10px; }
-    .placar-candidato .num-total { font-size: 22px; color: #e74c3c; background: #fadbd8; padding: 5px 15px; border-radius: 20px; }
-    .barra-progresso { width: 100%; height: 10px; background: #eee; border-radius: 5px; margin-top: 5px; overflow: hidden; }
-    .barra-preenchida { height: 100%; background: #3498db; width: 0%; transition: width 0.5s; }
+    .placar-candidato .num-total { font-size: 22px; padding: 5px 15px; border-radius: 20px; }
+    .barra-progresso { width: 100%; height: 12px; background: #eee; border-radius: 6px; margin-top: 5px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); }
+    .barra-preenchida { height: 100%; width: 0%; transition: width 0.5s; }
 
     /* Top Jogadores */
     .ranking-container ul { list-style: none; }
@@ -133,11 +147,14 @@
     <div class="tela">
       <div class="tela-titulo">ELEIÇÕES 2028</div>
       <div class="candidatos">
+        <!-- CARD FLÁVIO (VERDE E AMARELO) -->
         <div class="cand" id="cand-22" onclick="votar('Flavio Bolsonaro')">
           <div class="foto-wrapper"><img src="img/flavio.png" alt="Flávio Bolsonaro"></div>
           <div class="nome">Flavio Bolsonaro</div>
           <div class="numero">22</div>
         </div>
+        
+        <!-- CARD LULA (VERMELHO) -->
         <div class="cand" id="cand-13" onclick="votar('Lula')">
           <div class="foto-wrapper"><img src="img/lula.png" alt="Lula"></div>
           <div class="nome">Lula</div>
@@ -169,17 +186,18 @@
     <!-- Placar dos Candidatos -->
     <div class="box-resultado">
       <h2>📊 Placar Geral (Total de Votos)</h2>
-      <div class="placar-candidato" style="margin-bottom: 15px;">
+      
+      <div class="placar-candidato" style="margin-bottom: 5px;">
         <div class="nome-cand">Flavio Bolsonaro</div>
-        <div class="num-total" id="total-flavio">0</div>
+        <div class="num-total" id="total-flavio" style="color: #006400; background: #e8f5e9;">0</div>
       </div>
-      <div class="barra-progresso"><div class="barra-preenchida" id="barra-flavio" style="background: #e67e22;"></div></div>
+      <div class="barra-progresso"><div class="barra-preenchida" id="barra-flavio" style="background: linear-gradient(90deg, #006400, #FFD700);"></div></div>
 
-      <div class="placar-candidato" style="margin-top: 20px; margin-bottom: 15px;">
+      <div class="placar-candidato" style="margin-top: 25px; margin-bottom: 5px;">
         <div class="nome-cand">Lula</div>
-        <div class="num-total" id="total-lula" style="color: #c0392b; background: #fadbd8;">0</div>
+        <div class="num-total" id="total-lula" style="color: #8B0000; background: #fadbd8;">0</div>
       </div>
-      <div class="barra-progresso"><div class="barra-preenchida" id="barra-lula" style="background: #e74c3c;"></div></div>
+      <div class="barra-progresso"><div class="barra-preenchida" id="barra-lula" style="background: linear-gradient(90deg, #8B0000, #e74c3c);"></div></div>
     </div>
 
     <!-- Ranking dos Jogadores com Ver Mais -->
@@ -222,9 +240,8 @@
     let totalFlavio = 0;
     let totalLula = 0;
 
-    // Variáveis para o "Ver Mais"
-    let rankingGlobal = []; // Guarda os 100 jogadores
-    let itensVisiveis = 10; // Começa mostrando 10
+    let rankingGlobal = []; 
+    let itensVisiveis = 10; 
 
     // --- MONITORAR STATUS DA VOTAÇÃO ---
     onValue(ref(db, 'status_votacao'), (snapshot) => {
@@ -253,19 +270,21 @@
       if (totalGeral > 0) {
         document.getElementById('barra-flavio').style.width = ((totalFlavio / totalGeral) * 100) + "%";
         document.getElementById('barra-lula').style.width = ((totalLula / totalGeral) * 100) + "%";
+      } else {
+        document.getElementById('barra-flavio').style.width = "0%";
+        document.getElementById('barra-lula').style.width = "0%";
       }
     });
 
     // --- MONITORAR RANKING DOS JOGADORES (TOP 100) ---
-    // Puxa os 100 melhores de uma vez, mas só mostra 10 por vez na tela
     const rankingRef = query(ref(db, 'ranking'), orderByChild('votos'), limitToLast(100));
     
     onValue(rankingRef, (snapshot) => {
       rankingGlobal = [];
       snapshot.forEach((childSnapshot) => { rankingGlobal.push(childSnapshot.val()); });
-      rankingGlobal.reverse(); // Inverte para o maior ficar no topo
+      rankingGlobal.reverse(); 
       
-      renderizarRanking(); // Desenha os 10 primeiros na tela
+      renderizarRanking(); 
     });
 
     function renderizarRanking() {
@@ -280,7 +299,6 @@
         return;
       }
 
-      // Pega apenas a fatia que deve ser exibida (ex: do 0 ao 10)
       const exibir = rankingGlobal.slice(0, itensVisiveis);
 
       exibir.forEach((jogador, index) => {
@@ -296,7 +314,6 @@
         listaHTML.appendChild(li);
       });
 
-      // Se ainda houver jogadores para mostrar, exibe o botão "Ver Mais"
       if (itensVisiveis < rankingGlobal.length) {
         btnVerMais.style.display = "block";
         btnVerMais.innerText = `Ver mais (${rankingGlobal.length - itensVisiveis} restantes)`;
@@ -306,8 +323,8 @@
     }
 
     window.carregarMaisRanking = function() {
-      itensVisiveis += 10; // Adiciona mais 10 à lista
-      renderizarRanking(); // Redesenha
+      itensVisiveis += 10; 
+      renderizarRanking(); 
     }
 
     // --- TELA DE LOGIN ---
@@ -448,17 +465,15 @@
 
     // --- RESULTADO FINAL (TELA ENCERRADA) ---
     function carregarResultadoFinal() {
-      // Candidatos
       const listaCand = document.getElementById('final-candidatos');
       listaCand.innerHTML = `
-        <li><span>Flavio Bolsonaro</span> <strong>${totalFlavio} votos</strong></li>
-        <li><span>Lula</span> <strong>${totalLula} votos</strong></li>
+        <li><span style="color: #00FF00;">Flavio Bolsonaro</span> <strong>${totalFlavio} votos</strong></li>
+        <li><span style="color: #ff4d4d;">Lula</span> <strong>${totalLula} votos</strong></li>
         <li style="border: none; margin-top: 10px; font-weight: bold; color: #f1c40f;">
           <span>TOTAL GERAL</span> <span>${totalFlavio + totalLula} votos</span>
         </li>
       `;
 
-      // Jogadores (Top 100)
       const listaJogadores = document.getElementById('final-jogadores');
       listaJogadores.innerHTML = "";
 
@@ -467,7 +482,6 @@
         return;
       }
 
-      // Pega os primeiros 100 (como o rankingGlobal já puxa no máximo 100, exibimos todos)
       rankingGlobal.forEach((jogador, index) => {
         const li = document.createElement("li");
         li.innerHTML = `<span>${index + 1}º - ${jogador.nome} (${jogador.local})</span> <strong>${jogador.votos}</strong>`;
