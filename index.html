@@ -5,108 +5,163 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Urna Eletrônica</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: Arial, sans-serif;
       background: #e0e0e0;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       min-height: 100vh;
       padding: 20px;
+      gap: 24px;
     }
 
-    .urna-container {
-      position: relative;
+    /* ===== URNA ===== */
+    .urna {
       width: 100%;
       max-width: 800px;
-      container-type: inline-size; /* permite usar cqw (largura do container) nas fontes */
+      container-type: inline-size;
+      display: grid;
+      grid-template-columns: 1.7fr 1fr;
+      gap: 3cqw;
+      padding: 3cqw;
+      background: linear-gradient(180deg, #f7f7f7, #d9d9d9);
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.25), inset 0 2px 0 #fff;
+      border: 1px solid #bbb;
     }
 
-    .imagem-urna {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    /* ===== TELA AZUL DA URNA (foto + nome juntos) ===== */
-    #tela-urna {
-      position: absolute;
-      /* Se precisar, ajuste só estes 4 valores */
-      top: 37.5%;
-      left: 30.5%;
-      width: 28%;
-      height: 34%;
-
-      display: none;
-      align-items: center;
-      gap: 4%;
-      padding: 3%;
-      z-index: 20;
-      overflow: hidden;
+    /* ===== TELA AZUL ===== */
+    .tela {
       background: linear-gradient(180deg, #4a90d9, #1f5fb8);
-      border: 2px solid #0b3d8a;
-      pointer-events: none; /* não atrapalha os cliques */
-    }
-
-    #tela-urna.ativa {
+      border: 3px solid #0b3d8a;
+      border-radius: 6px;
+      padding: 2.5cqw;
+      color: #fff;
       display: flex;
+      flex-direction: column;
+      gap: 2cqw;
+      min-height: 46cqw;
     }
 
-    #foto-urna {
-      height: 100%;
-      width: 42%;
+    .tela-titulo {
+      font-size: 2.6cqw;
+      font-weight: bold;
+      letter-spacing: .5px;
+      border-bottom: 1px solid rgba(255,255,255,.4);
+      padding-bottom: 1cqw;
+    }
+
+    .candidatos {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2cqw;
+    }
+
+    .cand {
+      background: rgba(0,0,0,.18);
+      border: 2px solid transparent;
+      border-radius: 6px;
+      padding: 1.5cqw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1cqw;
+      cursor: pointer;
+      transition: .2s;
+      text-align: center;
+    }
+
+    .cand:hover { background: rgba(255,255,255,.18); }
+    .cand.sel   { border-color: #ffe600; background: rgba(255,255,255,.25); }
+    .cand.ok    { border-color: #3ddc4a; background: rgba(61,220,74,.3); }
+
+    .cand img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
       object-fit: cover;
       object-position: top center;
-      border: 2px solid white;
+      border: 2px solid #fff;
       background: #333;
-      flex-shrink: 0;
+      border-radius: 3px;
     }
 
-    #nome-urna {
-      flex: 1;
-      color: white;
+    .cand .nome   { font-size: 2.3cqw; font-weight: bold; line-height: 1.1; }
+    .cand .numero { font-size: 4cqw; font-weight: bold; line-height: 1; }
+
+    .tela-msg {
+      font-size: 2cqw;
+      min-height: 3cqw;
+      text-align: center;
+    }
+
+    /* ===== TECLADO ===== */
+    .teclado {
+      background: #2b3340;
+      border-radius: 8px;
+      padding: 2cqw;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5cqw;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,.6);
+    }
+
+    .display {
+      background: #cfd8e3;
+      color: #111;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 4.5cqw;
       font-weight: bold;
-      font-size: 2.6cqw;
-      line-height: 1.15;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+      letter-spacing: 1cqw;
+      padding: .8cqw;
+      min-height: 6cqw;
     }
 
-    /* ===== ÁREAS CLICÁVEIS INVISÍVEIS ===== */
-    .botao-voto {
-      position: absolute;
+    .grade {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2cqw;
+    }
+
+    .tecla {
+      border: none;
+      border-radius: 4px;
+      background: linear-gradient(180deg, #4a4f58, #2a2e35);
+      color: #fff;
+      font-size: 3cqw;
+      font-weight: bold;
+      padding: 1.6cqw 0;
       cursor: pointer;
-      z-index: 10;
+      box-shadow: 0 2px 0 #111;
+    }
+    .tecla:active { transform: translateY(2px); box-shadow: none; }
+    .tecla.zero { grid-column: 2; }
+
+    .acoes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2cqw;
+      margin-top: .5cqw;
     }
 
-    /* Tela azul -> Flávio */
-    .area-tela {
-      top: 37.5%;
-      left: 30.5%;
-      width: 28%;
-      height: 34%;
+    .acao {
+      border: none;
+      border-radius: 4px;
+      font-size: 1.5cqw;
+      font-weight: bold;
+      padding: 1.6cqw 0;
+      cursor: pointer;
+      box-shadow: 0 2px 0 rgba(0,0,0,.5);
     }
-
-    /* Teclado -> Lula */
-    .area-teclado {
-      top: 42%;
-      left: 61%;
-      width: 28%;
-      height: 33%;
-    }
-
-    .botao-voto:hover {
-      border: 2px dashed red;
-      background: rgba(255, 0, 0, 0.1);
-    }
+    .acao:active { transform: translateY(2px); box-shadow: none; }
+    .branco    { background: #f2f2f2; color: #222; }
+    .corrige   { background: #f28c1e; color: #222; }
+    .confirma  { background: #2fbf3f; color: #062; }
 
     /* ===== PAINEL INFERIOR ===== */
     .painel-inferior {
@@ -115,8 +170,8 @@
       align-items: center;
       width: 100%;
       max-width: 800px;
-      margin-top: 30px;
       padding: 0 10px;
+      gap: 12px;
     }
 
     .candidato-info {
@@ -126,72 +181,93 @@
       background: #fff;
       padding: 10px 20px;
       border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,.1);
       cursor: pointer;
       border: 2px solid transparent;
-      transition: border 0.2s;
+      transition: border .2s;
     }
+    .candidato-info:hover { border-color: #007bff; }
 
-    .candidato-info:hover {
-      border: 2px solid #007bff;
-    }
-
-    .foto-mini {
-      width: 50px;
-      height: 50px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-
-    .candidato-texto h2 {
-      font-size: 16px;
-      color: #333;
-    }
-
-    .candidato-texto p {
-      font-size: 14px;
-      color: #666;
-      font-weight: bold;
-    }
-
-    .candidato-texto span {
-      color: #007bff;
-      font-size: 20px;
-    }
+    .foto-mini { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; background: #ccc; }
+    .candidato-texto h2 { font-size: 16px; color: #333; }
+    .candidato-texto p  { font-size: 14px; color: #666; font-weight: bold; }
+    .candidato-texto span { color: #007bff; font-size: 20px; }
 
     #resultado {
       font-size: 18px;
       font-weight: bold;
       color: #00aa00;
       text-align: center;
+      flex: 1;
     }
 
     @media (max-width: 600px) {
-      .painel-inferior { flex-direction: column; gap: 15px; }
+      .painel-inferior { flex-direction: column; }
       .candidato-info { width: 100%; justify-content: center; }
+      .urna { grid-template-columns: 1fr; }
+      .tela { min-height: 90cqw; }
+      .cand .nome { font-size: 4cqw; }
+      .cand .numero { font-size: 7cqw; }
+      .tela-titulo { font-size: 4cqw; }
+      .tela-msg { font-size: 3.5cqw; }
+      .display { font-size: 8cqw; min-height: 11cqw; }
+      .tecla { font-size: 5cqw; padding: 3cqw 0; }
+      .acao { font-size: 2.8cqw; padding: 3cqw 0; }
     }
   </style>
 </head>
 <body>
 
-  <div class="urna-container">
-    <!-- Imagem de fundo -->
-    <img class="imagem-urna" src="img/urna.png" alt="Urna Eletrônica">
+  <!-- ===== URNA DESENHADA EM CSS ===== -->
+  <div class="urna">
 
-    <!-- Tela azul: foto + nome ficam juntos aqui dentro -->
-    <div id="tela-urna">
-      <img id="foto-urna" src="" alt="Foto do Candidato">
-      <div id="nome-urna"></div>
+    <div class="tela">
+      <div class="tela-titulo">ELEIÇÕES 2028 — Escolha seu candidato</div>
+
+      <div class="candidatos">
+        <div class="cand" id="cand-22" onclick="votar('Flavio Bolsonaro')">
+          <img src="img/flavio.png" alt="Flávio Bolsonaro">
+          <div class="nome">Flavio Bolsonaro</div>
+          <div class="numero">22</div>
+        </div>
+
+        <div class="cand" id="cand-13" onclick="votar('Lula')">
+          <img src="img/lula.png" alt="Lula">
+          <div class="nome">Lula</div>
+          <div class="numero">13</div>
+        </div>
+      </div>
+
+      <div class="tela-msg" id="tela-msg">Clique no candidato ou digite o número</div>
     </div>
 
-    <!-- Zonas de clique -->
-    <div class="botao-voto area-tela" onclick="votar('Flavio Bolsonaro', 'img/flavio.png')" title="Clique aqui para votar no Flávio"></div>
-    <div class="botao-voto area-teclado" onclick="votar('Lula', 'img/lula.png')" title="Clique aqui para votar no Lula"></div>
+    <div class="teclado">
+      <div class="display" id="display">--</div>
+
+      <div class="grade">
+        <button class="tecla" onclick="digitar('1')">1</button>
+        <button class="tecla" onclick="digitar('2')">2</button>
+        <button class="tecla" onclick="digitar('3')">3</button>
+        <button class="tecla" onclick="digitar('4')">4</button>
+        <button class="tecla" onclick="digitar('5')">5</button>
+        <button class="tecla" onclick="digitar('6')">6</button>
+        <button class="tecla" onclick="digitar('7')">7</button>
+        <button class="tecla" onclick="digitar('8')">8</button>
+        <button class="tecla" onclick="digitar('9')">9</button>
+        <button class="tecla zero" onclick="digitar('0')">0</button>
+      </div>
+
+      <div class="acoes">
+        <button class="acao branco"   onclick="limpar()">BRANCO</button>
+        <button class="acao corrige"  onclick="limpar()">CORRIGE</button>
+        <button class="acao confirma" onclick="confirmar()">CONFIRMA</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Painel com as fotos e contadores -->
+  <!-- ===== PAINEL COM CONTADORES ===== -->
   <div class="painel-inferior">
-    <div class="candidato-info" onclick="votar('Flavio Bolsonaro', 'img/flavio.png')">
+    <div class="candidato-info" onclick="votar('Flavio Bolsonaro')">
       <img class="foto-mini" src="img/flavio.png" alt="Flávio">
       <div class="candidato-texto">
         <h2>Flavio Bolsonaro</h2>
@@ -201,7 +277,7 @@
 
     <div id="resultado"></div>
 
-    <div class="candidato-info" onclick="votar('Lula', 'img/lula.png')">
+    <div class="candidato-info" onclick="votar('Lula')">
       <img class="foto-mini" src="img/lula.png" alt="Lula">
       <div class="candidato-texto">
         <h2>Lula</h2>
@@ -211,27 +287,30 @@
   </div>
 
   <script>
-    let votos = {
-      "Flavio Bolsonaro": 0,
-      "Lula": 0
+    const candidatos = {
+      "Flavio Bolsonaro": { numero: "22", idVotos: "votos-flavio" },
+      "Lula":             { numero: "13", idVotos: "votos-lula" }
     };
 
-    const ids = {
-      "Flavio Bolsonaro": "votos-flavio",
-      "Lula": "votos-lula"
-    };
-
+    let votos = { "Flavio Bolsonaro": 0, "Lula": 0 };
+    let digitado = "";
     let timer = null;
 
+    const display  = document.getElementById('display');
+    const telaMsg  = document.getElementById('tela-msg');
+    const resultado = document.getElementById('resultado');
+    const MSG_PADRAO = 'Clique no candidato ou digite o número';
+
+    // ---- carregar votos salvos ----
     (function carregarVotos() {
       try {
         const salvos = localStorage.getItem('votos');
         if (salvos) {
           const dados = JSON.parse(salvos);
           for (const nome in dados) {
-            if (ids[nome]) {
+            if (candidatos[nome]) {
               votos[nome] = dados[nome];
-              document.getElementById(ids[nome]).innerText = dados[nome];
+              document.getElementById(candidatos[nome].idVotos).innerText = dados[nome];
             }
           }
         }
@@ -240,30 +319,72 @@
       }
     })();
 
-    function votar(nomeCandidato, caminhoFoto) {
-      // Soma o voto e atualiza o contador
+    // ---- teclado ----
+    function digitar(n) {
+      if (digitado.length >= 2) return;
+      digitado += n;
+      atualizarDisplay();
+    }
+
+    function limpar() {
+      digitado = "";
+      atualizarDisplay();
+    }
+
+    function atualizarDisplay() {
+      display.innerText = (digitado + "--").slice(0, 2).split("").join(" ");
+
+      document.querySelectorAll('.cand').forEach(c => c.classList.remove('sel'));
+      const nome = nomePorNumero(digitado);
+
+      if (nome) {
+        const card = document.getElementById('cand-' + digitado);
+        if (card) card.classList.add('sel'); // Correção de segurança
+        telaMsg.innerText = nome + ' — aperte CONFIRMA';
+      } else if (digitado.length === 2) {
+        telaMsg.innerText = 'NÚMERO ERRADO — aperte CORRIGE';
+      } else {
+        telaMsg.innerText = MSG_PADRAO;
+      }
+    }
+
+    function nomePorNumero(num) {
+      for (const nome in candidatos) {
+        if (candidatos[nome].numero === num) return nome;
+      }
+      return null;
+    }
+
+    function confirmar() {
+      const nome = nomePorNumero(digitado);
+      if (nome) votar(nome);
+    }
+
+    // ---- votação ----
+    function votar(nomeCandidato) {
+      const info = candidatos[nomeCandidato];
+
       votos[nomeCandidato]++;
-      document.getElementById(ids[nomeCandidato]).innerText = votos[nomeCandidato];
-      try {
-        localStorage.setItem('votos', JSON.stringify(votos));
-      } catch (e) {}
+      document.getElementById(info.idVotos).innerText = votos[nomeCandidato];
+      try { localStorage.setItem('votos', JSON.stringify(votos)); } catch (e) {}
 
-      const tela = document.getElementById('tela-urna');
-      const foto = document.getElementById('foto-urna');
-      const nome = document.getElementById('nome-urna');
-      const msg  = document.getElementById('resultado');
+      // feedback visual na tela azul
+      document.querySelectorAll('.cand').forEach(c => c.classList.remove('sel', 'ok'));
+      
+      const cardVotado = document.getElementById('cand-' + info.numero);
+      if (cardVotado) cardVotado.classList.add('ok'); // Correção de segurança
+      
+      telaMsg.innerText = 'FIM — voto em ' + nomeCandidato;
+      resultado.innerText = '✅ Voto confirmado!';
 
-      // Mostra foto e nome dentro da tela azul
-      foto.src = caminhoFoto;
-      nome.innerText = nomeCandidato;
-      tela.classList.add('ativa');
-      msg.innerText = '✅ Voto confirmado!';
+      digitado = "";
+      display.innerText = '--';
 
-      // Se votar de novo antes dos 3s, reinicia o tempo
       clearTimeout(timer);
       timer = setTimeout(() => {
-        tela.classList.remove('ativa');
-        msg.innerText = '';
+        document.querySelectorAll('.cand').forEach(c => c.classList.remove('sel', 'ok'));
+        telaMsg.innerText = MSG_PADRAO;
+        resultado.innerText = '';
       }, 3000);
     }
   </script>
