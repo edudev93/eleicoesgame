@@ -2,7 +2,6 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <!-- Tag essencial para celular não dar zoom e travar o layout -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Urna Eletrônica</title>
   <style>
@@ -10,7 +9,7 @@
       box-sizing: border-box; 
       margin: 0; 
       padding: 0; 
-      -webkit-tap-highlight-color: transparent; /* Tira o azul de seleção no celular */
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -87,14 +86,16 @@
     .cand.sel   { border-color: #ffe600; background: rgba(255,255,255,.25); }
     .cand.ok    { border-color: #3ddc4a; background: rgba(61,220,74,.3); }
 
+    /* 🔥 AQUI ESTÁ A CORREÇÃO DA IMAGEM 🔥 */
     .cand img {
       width: 100%;
-      aspect-ratio: 3 / 4;
-      object-fit: cover;
-      object-position: top center;
+      height: 100%;
+      aspect-ratio: 1 / 1; /* Força o quadrado perfeito */
+      object-fit: contain; /* Mostra a imagem INTEIRA sem cortar */
+      object-position: center; /* Centraliza a imagem */
       border: 2px solid #fff;
-      background: #333;
-      border-radius: 3px;
+      background: #222; /* Fundo escuro para preencher as bordas vazias */
+      border-radius: 4px;
     }
 
     .cand .nome   { font-size: 2.3cqw; font-weight: bold; line-height: 1.1; }
@@ -198,7 +199,14 @@
     .candidato-info:hover { border-color: #007bff; }
     .candidato-info:active { transform: scale(0.98); }
 
-    .foto-mini { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; background: #ccc; }
+    /* Ajuste na mini foto também */
+    .foto-mini { 
+      width: 50px; 
+      height: 50px; 
+      object-fit: contain; 
+      border-radius: 8px; 
+      background: #222; 
+    }
     .candidato-texto h2 { font-size: 16px; color: #333; }
     .candidato-texto p  { font-size: 14px; color: #666; font-weight: bold; }
     .candidato-texto span { color: #007bff; font-size: 20px; }
@@ -220,7 +228,6 @@
         gap: 15px;
       }
 
-      /* Muda a urna de lado-a-lado para cima-e-baixo */
       .urna {
         grid-template-columns: 1fr;
         padding: 15px;
@@ -228,16 +235,14 @@
       }
 
       .tela {
-        min-height: 60vw; /* Tela mais quadrada no celular */
+        min-height: 70vw;
       }
 
-      /* Aumenta os textos da tela azul para ficarem legíveis */
       .tela-titulo { font-size: 4vw; text-align: center; }
       .cand .nome { font-size: 3.5vw; }
       .cand .numero { font-size: 6vw; }
       .tela-msg { font-size: 3.5vw; }
 
-      /* Aumenta os botões do teclado para facilitar o toque (dedão) */
       .display { font-size: 8vw; min-height: 12vw; }
       .tecla { 
         font-size: 6vw; 
@@ -250,7 +255,6 @@
         border-radius: 8px;
       }
       
-      /* Ajusta o painel de baixo */
       .painel-inferior {
         flex-direction: column;
         gap: 15px;
@@ -348,12 +352,10 @@
     const resultado = document.getElementById('resultado');
     const MSG_PADRAO = 'Digite o número ou clique na foto';
 
-    // Vibração para celular (se o aparelho suportar)
     function vibrar(ms = 50) {
       if (navigator.vibrate) navigator.vibrate(ms);
     }
 
-    // Carregar votos salvos
     (function carregarVotos() {
       try {
         const salvos = localStorage.getItem('votos');
@@ -370,14 +372,14 @@
     })();
 
     function digitar(n) {
-      vibrar(); // Vibra ao digitar
+      vibrar(); 
       if (digitado.length >= 2) return;
       digitado += n;
       atualizarDisplay();
     }
 
     function limpar() {
-      vibrar(); // Vibra ao limpar
+      vibrar(); 
       digitado = "";
       atualizarDisplay();
     }
@@ -409,11 +411,11 @@
     function confirmar() {
       const nome = nomePorNumero(digitado);
       if (nome) votar(nome);
-      else vibrar(200); // Vibra mais forte se errar
+      else vibrar(200); 
     }
 
     function votar(nomeCandidato) {
-      vibrar(100); // Vibra ao confirmar o voto
+      vibrar(100); 
       const info = candidatos[nomeCandidato];
 
       votos[nomeCandidato]++;
@@ -438,18 +440,12 @@
       }, 3000);
     }
 
-    // 🖥️ ATALHOS DE TECLADO PARA COMPUTADOR
     document.addEventListener('keydown', function(event) {
-      // Se a tecla for um número de 0 a 9
       if (event.key >= '0' && event.key <= '9') {
         digitar(event.key);
-      }
-      // Se for Enter, confirma
-      else if (event.key === 'Enter') {
+      } else if (event.key === 'Enter') {
         confirmar();
-      }
-      // Se for Backspace (apagar) ou Escape, corrige
-      else if (event.key === 'Backspace' || event.key === 'Escape') {
+      } else if (event.key === 'Backspace' || event.key === 'Escape') {
         event.preventDefault();
         limpar();
       }
