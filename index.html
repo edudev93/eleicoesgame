@@ -9,30 +9,17 @@
     body { font-family: Arial, sans-serif; background: #2c3e50; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; padding: 15px; gap: 15px; overflow-x: hidden; }
     
     /* ===== TELA DE ENTRADA (LOGIN) ===== */
-    .tela-login {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: #2c3e50; z-index: 1000;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      color: white; text-align: center; padding: 20px;
-    }
+    .tela-login { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2c3e50; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; padding: 20px; }
     .tela-login h1 { font-size: 28px; margin-bottom: 10px; color: #f1c40f; }
     .tela-login p { font-size: 16px; margin-bottom: 20px; color: #ccc; }
-    .tela-login input {
-      padding: 15px; font-size: 18px; border-radius: 8px; border: none; width: 100%; max-width: 300px; margin-bottom: 15px; text-align: center;
-      background: #fff; color: #333;
-    }
-    .tela-login button {
-      padding: 15px 40px; font-size: 18px; font-weight: bold; background: #2ecc71; color: #000; border: none; border-radius: 8px; cursor: pointer; width: 100%; max-width: 300px;
-      transition: 0.2s;
-    }
+    .tela-login input { padding: 15px; font-size: 18px; border-radius: 8px; border: none; width: 100%; max-width: 300px; margin-bottom: 15px; text-align: center; background: #fff; color: #333; }
+    .tela-login button { padding: 15px 40px; font-size: 18px; font-weight: bold; background: #2ecc71; color: #000; border: none; border-radius: 8px; cursor: pointer; width: 100%; max-width: 300px; transition: 0.2s; }
     .tela-login button:hover { background: #27ae60; transform: scale(1.02); }
 
     /* ===== HUD ===== */
     .hud { width: 100%; max-width: 800px; display: flex; justify-content: space-between; align-items: center; background: #1a252f; color: white; padding: 15px 25px; border-radius: 12px; font-size: 20px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border-bottom: 4px solid #e74c3c; flex-wrap: wrap; gap: 10px; }
     .hud .jogador { color: #f1c40f; font-size: 16px; }
     .hud .pontos { color: #2ecc71; }
-    
-    /* BOTÃO ENCERRAR */
     .btn-encerrar { background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 14px; }
     .btn-encerrar:hover { background: #c0392b; }
 
@@ -57,25 +44,38 @@
     .acao { border: none; border-radius: 4px; font-size: 1.5cqw; font-weight: bold; padding: 1.6cqw 0; cursor: pointer; box-shadow: 0 2px 0 rgba(0,0,0,.5); user-select: none; }
     .acao:active { transform: translateY(2px); box-shadow: none; } .branco { background: #f2f2f2; color: #222; } .corrige { background: #f28c1e; color: #222; } .confirma { background: #2fbf3f; color: #062; }
     
-    /* ===== RANKING ===== */
-    .ranking-container { width: 100%; max-width: 800px; background: white; border-radius: 12px; padding: 20px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    .ranking-container h2 { font-size: 22px; color: #333; margin-bottom: 15px; text-align: center; }
+    /* ===== PLACAR GERAL E RANKING ===== */
+    .painel-resultados { display: flex; gap: 15px; width: 100%; max-width: 800px; flex-wrap: wrap; margin-bottom: 30px; }
+    
+    .box-resultado { flex: 1; min-width: 300px; background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .box-resultado h2 { font-size: 18px; color: #333; margin-bottom: 15px; text-align: center; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+    
+    /* Placar Geral (Candidatos) */
+    .placar-candidato { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; font-size: 18px; font-weight: bold; color: #333; }
+    .placar-candidato .nome-cand { display: flex; align-items: center; gap: 10px; }
+    .placar-candidato .num-total { font-size: 22px; color: #e74c3c; background: #fadbd8; padding: 5px 15px; border-radius: 20px; }
+    .barra-progresso { width: 100%; height: 10px; background: #eee; border-radius: 5px; margin-top: 5px; overflow: hidden; }
+    .barra-preenchida { height: 100%; background: #3498db; width: 0%; transition: width 0.5s; }
+
+    /* Top 10 (Jogadores) */
     .ranking-container ul { list-style: none; }
-    .ranking-container li { padding: 10px; border-bottom: 1px solid #eee; font-size: 18px; color: #333; display: flex; justify-content: space-between; align-items: center; }
+    .ranking-container li { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 16px; color: #333; display: flex; justify-content: space-between; align-items: center; }
     .ranking-container li:last-child { border-bottom: none; }
-    .ranking-container .pos { font-weight: bold; color: #e74c3c; width: 30px; display: inline-block; }
-    .ranking-container .estado-tag { font-size: 12px; background: #3498db; color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px; vertical-align: middle; font-weight: bold; }
-    .ranking-container .pts { font-weight: bold; color: #2ecc71; background: #e8f8f5; padding: 4px 10px; border-radius: 20px; }
+    .ranking-container .pos { font-weight: bold; color: #e74c3c; width: 25px; display: inline-block; }
+    .ranking-container .estado-tag { font-size: 11px; background: #3498db; color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px; vertical-align: middle; font-weight: bold; }
+    .ranking-container .pts { font-weight: bold; color: #2ecc71; }
 
     /* ===== TELA DE VOTAÇÃO ENCERRADA ===== */
     .tela-encerrada { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; padding: 20px; }
     .tela-encerrada h1 { font-size: 40px; color: #e74c3c; margin-bottom: 10px; }
-    .tela-encerrada p { font-size: 18px; margin-bottom: 30px; }
-    .tela-encerrada .ranking-box { background: #2c3e50; border-radius: 12px; padding: 20px; width: 100%; max-width: 400px; text-align: left; max-height: 40vh; overflow-y: auto; margin-bottom: 20px; }
-    .tela-encerrada .ranking-box li { padding: 10px; border-bottom: 1px solid #444; display: flex; justify-content: space-between; font-size: 18px;}
+    .tela-encerrada p { font-size: 18px; margin-bottom: 20px; }
     
-    /* BOTÃO VOTAR NOVAMENTE */
-    .btn-votar-novamente { background: #2ecc71; color: #000; font-size: 18px; font-weight: bold; padding: 15px 40px; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); transition: 0.2s; }
+    .tela-encerrada .resultados-finais { display: flex; gap: 20px; width: 100%; max-width: 600px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .tela-encerrada .box-final { background: #2c3e50; border-radius: 12px; padding: 20px; flex: 1; min-width: 250px; text-align: left; }
+    .tela-encerrada .box-final h3 { text-align: center; color: #f1c40f; margin-bottom: 15px; }
+    .tela-encerrada .box-final li { padding: 8px 0; border-bottom: 1px solid #444; display: flex; justify-content: space-between; font-size: 16px; }
+    
+    .btn-votar-novamente { background: #2ecc71; color: #000; font-size: 18px; font-weight: bold; padding: 15px 40px; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); transition: 0.2s; margin-top: 10px; }
     .btn-votar-novamente:hover { background: #27ae60; transform: scale(1.05); }
 
     @media (max-width: 650px) {
@@ -93,30 +93,34 @@
   <div class="tela-login" id="tela-login">
     <h1>🗳️ Urna Global</h1>
     <p>Preencha seus dados para entrar no Ranking:</p>
-    
     <input type="text" id="input-nome" placeholder="Seu nome ou apelido" maxlength="15">
-    <input type="text" id="input-local" placeholder="De onde você está votando? (Ex: SP, Rio, Portugal...)" maxlength="20">
-
+    <input type="text" id="input-local" placeholder="De onde você está votando?" maxlength="20">
     <button onclick="entrarNoJogo()">ENTRAR E VOTAR</button>
   </div>
 
   <!-- TELA DE VOTAÇÃO ENCERRADA -->
   <div class="tela-encerrada" id="tela-encerrada">
     <h1>🚫 VOTAÇÃO ENCERRADA</h1>
-    <p>A urna foi fechada. Confira o resultado:</p>
-    <div class="ranking-box">
-      <h2 style="text-align: center; color: #f1c40f; margin-bottom: 15px;">🏆 Resultado Final</h2>
-      <ul id="ranking-final" style="list-style: none;"></ul>
+    <p>Resultados oficiais da eleição:</p>
+    
+    <div class="resultados-finais">
+      <div class="box-final">
+        <h3>📊 Votos por Candidato</h3>
+        <ul id="final-candidatos" style="list-style: none;"></ul>
+      </div>
+      <div class="box-final">
+        <h3>🏆 Top 5 Jogadores</h3>
+        <ul id="final-jogadores" style="list-style: none;"></ul>
+      </div>
     </div>
     
-    <!-- NOVO BOTÃO -->
     <button class="btn-votar-novamente" onclick="reabrirVotacao()">VOTAR NOVAMENTE</button>
   </div>
 
   <!-- HUD -->
   <div class="hud">
     <div class="jogador">👤 <span id="nome-jogador">Visitante</span></div>
-    <div class="pontos">🗳️ Votos: <span id="pontos">0</span></div>
+    <div class="pontos">🗳️ Seus Votos: <span id="pontos">0</span></div>
     <button class="btn-encerrar" onclick="encerrarVotacao()">ENCERRAR VOTAÇÃO</button>
   </div>
 
@@ -155,18 +159,39 @@
     </div>
   </div>
 
-  <!-- PLACAR GLOBAL -->
-  <div class="ranking-container">
-    <h2>🏆 Top 10 (Quem mais votou)</h2>
-    <ul id="lista-ranking">
-      <li>Carregando ranking...</li>
-    </ul>
+  <!-- PAINEL DE RESULTADOS EM TEMPO REAL -->
+  <div class="painel-resultados">
+    
+    <!-- Placar dos Candidatos -->
+    <div class="box-resultado">
+      <h2>📊 Placar Geral (Total de Votos)</h2>
+      <div class="placar-candidato" style="margin-bottom: 15px;">
+        <div class="nome-cand">Flavio Bolsonaro</div>
+        <div class="num-total" id="total-flavio">0</div>
+      </div>
+      <div class="barra-progresso"><div class="barra-preenchida" id="barra-flavio" style="background: #e67e22;"></div></div>
+
+      <div class="placar-candidato" style="margin-top: 20px; margin-bottom: 15px;">
+        <div class="nome-cand">Lula</div>
+        <div class="num-total" id="total-lula" style="color: #c0392b; background: #fadbd8;">0</div>
+      </div>
+      <div class="barra-progresso"><div class="barra-preenchida" id="barra-lula" style="background: #e74c3c;"></div></div>
+    </div>
+
+    <!-- Ranking dos Jogadores -->
+    <div class="box-resultado ranking-container">
+      <h2>🏆 Top 10 (Quem mais votou)</h2>
+      <ul id="lista-ranking">
+        <li>Carregando ranking...</li>
+      </ul>
+    </div>
+
   </div>
 
   <!-- FIREBASE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-    import { getDatabase, ref, set, onValue, query, orderByChild, limitToLast, get, remove } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
+    import { getDatabase, ref, set, onValue, query, orderByChild, limitToLast, get, remove, update } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyC7vYemf1hXvd4Gz0QAH4v51fTFTsY6vXs",
@@ -181,15 +206,19 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    const candidatos = { "Flavio Bolsonaro": { numero: "22" }, "Lula": { numero: "13" } };
+    const candidatos = { "Flavio Bolsonaro": { numero: "22", dbKey: "flavio" }, "Lula": { numero: "13", dbKey: "lula" } };
     let digitado = "";
     let pontos = 0;
     let nomeJogador = "";
     let localJogador = "";
     let idJogador = ""; 
     let jogoAtivo = true; 
+    
+    // Variáveis para guardar o total global
+    let totalFlavio = 0;
+    let totalLula = 0;
 
-    // Verifica em tempo real se a votação foi encerrada
+    // --- MONITORAR STATUS DA VOTAÇÃO ---
     onValue(ref(db, 'status_votacao'), (snapshot) => {
       const status = snapshot.val();
       if (status && status.encerrada === true) {
@@ -203,19 +232,33 @@
       }
     });
 
+    // --- MONITORAR TOTAL DE VOTOS DOS CANDIDATOS (TEMPO REAL) ---
+    onValue(ref(db, 'total_eleicao'), (snapshot) => {
+      const dados = snapshot.val() || { flavio: 0, lula: 0 };
+      totalFlavio = dados.flavio || 0;
+      totalLula = dados.lula || 0;
+      
+      document.getElementById('total-flavio').innerText = totalFlavio;
+      document.getElementById('total-lula').innerText = totalLula;
+
+      // Calcula as barras de progresso
+      const totalGeral = totalFlavio + totalLula;
+      if (totalGeral > 0) {
+        document.getElementById('barra-flavio').style.width = ((totalFlavio / totalGeral) * 100) + "%";
+        document.getElementById('barra-lula').style.width = ((totalLula / totalGeral) * 100) + "%";
+      } else {
+        document.getElementById('barra-flavio').style.width = "0%";
+        document.getElementById('barra-lula').style.width = "0%";
+      }
+    });
+
     // --- TELA DE LOGIN ---
     window.entrarNoJogo = function() {
       const nomeInput = document.getElementById('input-nome').value.trim();
       const localInput = document.getElementById('input-local').value.trim();
       
-      if (nomeInput === "") {
-        alert("Por favor, digite um nome para entrar no ranking!");
-        return;
-      }
-      if (localInput === "") {
-        alert("Por favor, diga de onde você está votando!");
-        return;
-      }
+      if (nomeInput === "") { alert("Por favor, digite um nome!"); return; }
+      if (localInput === "") { alert("Por favor, diga de onde você está votando!"); return; }
       
       nomeJogador = nomeInput;
       localJogador = localInput;
@@ -253,7 +296,7 @@
         document.getElementById('tela-msg').innerText = 'Clique para votar!'; 
       }, 200);
 
-      salvarVotosNoBanco();
+      salvarVotosNoBanco(nomeCandidato);
     }
 
     window.digitar = function(n) { 
@@ -299,19 +342,16 @@
 
     // --- ENCERRAR / REABRIR VOTAÇÃO ---
     window.encerrarVotacao = function() {
-      const confirmar = window.confirm("Tem certeza que deseja ENCERRAR a votação? Ninguém mais poderá votar!");
+      const confirmar = window.confirm("Tem certeza que deseja ENCERRAR a votação?");
       if (confirmar) {
         set(ref(db, 'status_votacao'), { encerrada: true });
       }
     }
 
     window.reabrirVotacao = function() {
-      const confirmar = window.confirm("Deseja reabrir a votação para todos? Os votos já dados serão mantidos!");
+      const confirmar = window.confirm("Deseja reabrir a votação para todos? Os votos serão mantidos!");
       if (confirmar) {
-        // Remove o status de encerrado, o que reativa a urna para todos em tempo real
         remove(ref(db, 'status_votacao')).then(() => {
-          // Quando a votação reabrir, se o jogador atual já tiver um nome, 
-          // a tela de login não precisa aparecer de novo.
           document.getElementById('tela-encerrada').style.display = "none";
           if (nomeJogador) {
              document.getElementById('nome-jogador').innerText = nomeJogador + " (" + localJogador + ")";
@@ -321,12 +361,24 @@
     }
 
     // --- BANCO DE DADOS FIREBASE ---
-    function salvarVotosNoBanco() {
+    function salvarVotosNoBanco(nomeCandidato) {
       if (!idJogador || !jogoAtivo) return;
+      
+      const info = candidatos[nomeCandidato];
+
+      // 1. Salva os dados do jogador (nome, local, e o total de votos que ELE deu)
       set(ref(db, 'ranking/' + idJogador), {
         nome: nomeJogador,
         local: localJogador,
         votos: pontos
+      });
+
+      // 2. Atualiza o placar global do candidato (+1 voto para ele)
+      // Usamos uma transação para não haver erro se duas pessoas votarem no mesmo milissegundo
+      import("https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js").then(({ runTransaction, ref }) => {
+        runTransaction(ref(db, 'total_eleicao/' + info.dbKey), (votosAtuais) => {
+          return (votosAtuais || 0) + 1;
+        });
       });
     }
 
@@ -349,15 +401,12 @@
       listaHTML.innerHTML = "";
       
       if (!snapshot.exists()) {
-        listaHTML.innerHTML = "<li>Nenhum voto registrado ainda. Seja o 1º!</li>";
+        listaHTML.innerHTML = "<li>Nenhum voto registrado ainda.</li>";
         return;
       }
       
       const rankingArray = [];
-      snapshot.forEach((childSnapshot) => { 
-        rankingArray.push(childSnapshot.val()); 
-      });
-      
+      snapshot.forEach((childSnapshot) => { rankingArray.push(childSnapshot.val()); });
       rankingArray.reverse(); 
 
       rankingArray.forEach((jogador, index) => {
@@ -368,7 +417,7 @@
             ${jogador.nome} 
             <span class="estado-tag">${jogador.local}</span>
           </span> 
-          <span class="pts">${jogador.votos} votos</span>
+          <span class="pts">${jogador.votos}</span>
         `;
         listaHTML.appendChild(li);
       });
@@ -376,22 +425,33 @@
 
     // --- RESULTADO FINAL ---
     function carregarResultadoFinal() {
-      const listaFinal = document.getElementById('ranking-final');
+      // 1. Carrega os Candidatos
+      const listaCand = document.getElementById('final-candidatos');
+      listaCand.innerHTML = `
+        <li><span>Flavio Bolsonaro</span> <strong>${totalFlavio} votos</strong></li>
+        <li><span>Lula</span> <strong>${totalLula} votos</strong></li>
+        <li style="border: none; margin-top: 10px; font-weight: bold; color: #f1c40f;">
+          <span>TOTAL GERAL</span> <span>${totalFlavio + totalLula} votos</span>
+        </li>
+      `;
+
+      // 2. Carrega os Jogadores
+      const listaJogadores = document.getElementById('final-jogadores');
       get(rankingRef).then((snapshot) => {
-        listaFinal.innerHTML = "";
+        listaJogadores.innerHTML = "";
         const rankingArray = [];
         snapshot.forEach((child) => { rankingArray.push(child.val()); });
         rankingArray.reverse();
 
         if (rankingArray.length === 0) {
-          listaFinal.innerHTML = "<li>Nenhum voto computado.</li>";
+          listaJogadores.innerHTML = "<li>Nenhum voto computado.</li>";
           return;
         }
 
         rankingArray.forEach((jogador, index) => {
           const li = document.createElement("li");
-          li.innerHTML = `<span>${index + 1}º - ${jogador.nome} (${jogador.local})</span> <strong>${jogador.votos}</strong>`;
-          listaFinal.appendChild(li);
+          li.innerHTML = `<span>${index + 1}º - ${jogador.nome}</span> <strong>${jogador.votos}</strong>`;
+          listaJogadores.appendChild(li);
         });
       });
     }
