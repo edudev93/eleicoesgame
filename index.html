@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urna Eletrônica</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #1a1a2e;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+      font-size: 28px;
+    }
+
+    .candidatos {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #16213e;
+      border: 3px solid #444;
+      border-radius: 16px;
+      padding: 30px 20px;
+      width: 240px;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s, background 0.2s;
+      user-select: none;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      border-color: #00d4ff;
+    }
+
+    .card:active {
+      transform: scale(0.97);
+      background: #0f3460;
+    }
+
+    .foto {
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #00d4ff;
+      margin: 0 auto 15px auto;
+      display: block;
+      background: #0f3460;
+    }
+
+    .nome {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .contador {
+      margin-top: 15px;
+      font-size: 16px;
+      color: #00ff88;
+      font-weight: bold;
+    }
+
+    .contador .numero {
+      font-size: 28px;
+      display: block;
+      color: #00d4ff;
+    }
+
+    #resultado {
+      margin-top: 40px;
+      font-size: 22px;
+      min-height: 40px;
+    }
+
+    @media (max-width: 600px) {
+      .candidatos {
+        gap: 20px;
+      }
+      .card {
+        width: 100%;
+        max-width: 300px;
+      }
+      h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🗳️ Vote no seu candidato</h1>
+
+  <div class="candidatos">
+    <div class="card" onclick="votar('Flavio Bolsonaro')">
+      <img class="foto" src="img/flavio.png" alt="Flavio Bolsonaro">
+      <div class="nome">Flavio Bolsonaro</div>
+      <div class="contador">
+        Votos: <span class="numero" id="votos-flavio">0</span>
+      </div>
+    </div>
+
+    <div class="card" onclick="votar('Lula')">
+      <img class="foto" src="img/lula.png" alt="Lula">
+      <div class="nome">Lula</div>
+      <div class="contador">
+        Votos: <span class="numero" id="votos-lula">0</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="resultado"></div>
+
+  <script>
+    // Objeto com os votos de cada candidato
+    let votos = {
+      "Flavio Bolsonaro": 0,
+      "Lula": 0
+    };
+
+    // Mapa: nome do candidato -> id do elemento HTML
+    const ids = {
+      "Flavio Bolsonaro": "votos-flavio",
+      "Lula": "votos-lula"
+    };
+
+    // Ao carregar a página, recupera votos salvos no navegador
+    (function carregarVotos() {
+      const salvos = localStorage.getItem('votos');
+      if (salvos) {
+        try {
+          const dados = JSON.parse(salvos);
+          for (const nome in dados) {
+            if (ids[nome]) {
+              votos[nome] = dados[nome];
+              document.getElementById(ids[nome]).innerText = dados[nome];
+            }
+          }
+        } catch (e) {
+          console.warn('Erro ao carregar votos salvos:', e);
+        }
+      }
+    })();
+
+    function votar(nomeCandidato) {
+      // Soma +1 voto
+      votos[nomeCandidato]++;
+
+      // Atualiza o contador na tela
+      document.getElementById(ids[nomeCandidato]).innerText =
+        votos[nomeCandidato];
+
+      // Salva no navegador
+      localStorage.setItem('votos', JSON.stringify(votos));
+
+      // Mostra mensagem de confirmação
+      document.getElementById('resultado').innerText =
+        `✅ Voto registrado em: ${nomeCandidato}`;
+    }
+  </script>
+
+</body>
+</html>
