@@ -3,12 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Jogo da Urna Eleitoral</title>
+  <title>Urna Eletrônica Global</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-    body { font-family: Arial, sans-serif; background: #2c3e50; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; padding: 15px; gap: 15px; overflow: hidden; }
-    .hud { width: 100%; max-width: 800px; display: flex; justify-content: space-between; background: #1a252f; color: white; padding: 15px 25px; border-radius: 12px; font-size: 20px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border-bottom: 4px solid #e74c3c; }
-    .hud .tempo { color: #f1c40f; } .hud .pontos { color: #2ecc71; }
+    body { font-family: Arial, sans-serif; background: #2c3e50; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; padding: 15px; gap: 15px; overflow-x: hidden; }
+    
+    /* ===== TELA DE ENTRADA (NOME) ===== */
+    .tela-login {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: #2c3e50; z-index: 1000;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: white; text-align: center; padding: 20px;
+    }
+    .tela-login h1 { font-size: 28px; margin-bottom: 20px; color: #f1c40f; }
+    .tela-login input {
+      padding: 15px; font-size: 18px; border-radius: 8px; border: none; width: 100%; max-width: 300px; margin-bottom: 15px; text-align: center;
+    }
+    .tela-login button {
+      padding: 15px 40px; font-size: 18px; font-weight: bold; background: #2ecc71; color: #000; border: none; border-radius: 8px; cursor: pointer;
+    }
+
+    /* ===== HUD ===== */
+    .hud { width: 100%; max-width: 800px; display: flex; justify-content: space-between; align-items: center; background: #1a252f; color: white; padding: 15px 25px; border-radius: 12px; font-size: 20px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border-bottom: 4px solid #e74c3c; }
+    .hud .jogador { color: #f1c40f; font-size: 16px; }
+    .hud .pontos { color: #2ecc71; }
+
+    /* ===== URNA ===== */
     .urna { width: 100%; max-width: 800px; container-type: inline-size; display: grid; grid-template-columns: 1.7fr 1fr; gap: 3cqw; padding: 3cqw; background: linear-gradient(180deg, #f7f7f7, #d9d9d9); border-radius: 16px; box-shadow: 0 12px 30px rgba(0,0,0,.25), inset 0 2px 0 #fff; border: 1px solid #bbb; position: relative; }
     .tela { background: linear-gradient(180deg, #4a90d9, #1f5fb8); border: 3px solid #0b3d8a; border-radius: 6px; padding: 2.5cqw; color: #fff; display: flex; flex-direction: column; gap: 2cqw; min-height: 46cqw; }
     .tela-titulo { font-size: 2.6cqw; font-weight: bold; letter-spacing: .5px; border-bottom: 1px solid rgba(255,255,255,.4); padding-bottom: 1cqw; }
@@ -28,41 +48,45 @@
     .acoes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2cqw; margin-top: .5cqw; }
     .acao { border: none; border-radius: 4px; font-size: 1.5cqw; font-weight: bold; padding: 1.6cqw 0; cursor: pointer; box-shadow: 0 2px 0 rgba(0,0,0,.5); user-select: none; }
     .acao:active { transform: translateY(2px); box-shadow: none; } .branco { background: #f2f2f2; color: #222; } .corrige { background: #f28c1e; color: #222; } .confirma { background: #2fbf3f; color: #062; }
-    .tela-fim { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); border-radius: 16px; display: none; flex-direction: column; align-items: center; justify-content: center; color: white; z-index: 100; text-align: center; padding: 20px; }
-    .tela-fim h2 { font-size: 35px; color: #e74c3c; margin-bottom: 5px; } .tela-fim p { font-size: 20px; margin-bottom: 5px; } .tela-fim .recorde { font-size: 16px; color: #f1c40f; margin-bottom: 15px; }
-    .ranking-box { background: rgba(255,255,255,0.1); border-radius: 10px; padding: 15px; width: 100%; max-width: 350px; max-height: 250px; overflow-y: auto; margin-bottom: 20px; }
-    .ranking-box h3 { font-size: 18px; margin-bottom: 10px; color: #f1c40f; } .ranking-box ul { list-style: none; text-align: left; font-size: 16px; } .ranking-box li { padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.1); } .ranking-box li:last-child { border-bottom: none; }
-    .ranking-box .pos { font-weight: bold; color: #2ecc71; margin-right: 5px; } .ranking-box .pts { float: right; color: #3498db; font-weight: bold; }
-    .btn-reiniciar { background: #2ecc71; color: #000; font-size: 18px; font-weight: bold; padding: 12px 30px; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); transition: 0.2s; }
-    .btn-reiniciar:hover { background: #27ae60; transform: scale(1.05); }
+    
+    /* ===== RANKING ===== */
+    .ranking-container {
+      width: 100%; max-width: 800px; background: white; border-radius: 12px; padding: 20px; margin-bottom: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .ranking-container h2 { font-size: 22px; color: #333; margin-bottom: 15px; text-align: center; }
+    .ranking-container ul { list-style: none; }
+    .ranking-container li { padding: 10px; border-bottom: 1px solid #eee; font-size: 18px; color: #333; display: flex; justify-content: space-between; align-items: center; }
+    .ranking-container li:last-child { border-bottom: none; }
+    .ranking-container .pos { font-weight: bold; color: #e74c3c; width: 40px; display: inline-block; }
+    .ranking-container .pts { font-weight: bold; color: #2ecc71; background: #e8f8f5; padding: 4px 10px; border-radius: 20px; }
+
     @media (max-width: 650px) {
       .hud { font-size: 16px; padding: 10px 15px; }
       .urna { grid-template-columns: 1fr; padding: 15px; gap: 10px; }
       .tela { min-height: 70vw; } .tela-titulo { font-size: 4vw; text-align: center; } .cand .nome { font-size: 3.5vw; } .cand .numero { font-size: 6vw; } .tela-msg { font-size: 3.5vw; margin-top: 5px; }
       .teclado { padding: 10px; gap: 8px; } .display { font-size: 5vw; min-height: 8vw; padding: 4px; letter-spacing: 0.5vw; } .grade { gap: 6px; } .tecla { font-size: 4vw; padding: 2vw 0; border-radius: 6px; } .acoes { gap: 6px; } .acao { font-size: 2.5vw; padding: 2.5vw 0; border-radius: 6px; }
-      .tela-fim h2 { font-size: 28px; } .tela-fim p { font-size: 18px; } .ranking-box { padding: 10px; max-height: 200px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="hud">
-    <div class="tempo">⏱️ Tempo: <span id="tempo">15</span>s</div>
-    <div class="pontos">🏆 Pontos: <span id="pontos">0</span></div>
+  <!-- TELA INICIAL PARA COLOCAR O NOME -->
+  <div class="tela-login" id="tela-login">
+    <h1>🗳️ Urna Global</h1>
+    <p style="margin-bottom: 20px;">Digite seu nome para entrar no Ranking:</p>
+    <input type="text" id="input-nome" placeholder="Seu nome ou apelido" maxlength="15">
+    <button onclick="entrarNoJogo()">ENTRAR E VOTAR</button>
   </div>
 
-  <div class="urna">
-    <div class="tela-fim" id="tela-fim">
-      <h2>FIM DE JOGO!</h2>
-      <p>Você fez <span id="pontos-finais">0</span> pontos</p>
-      <div class="recorde">Seu Recorde: <span id="recorde">0</span></div>
-      <div class="ranking-box">
-        <h3>🏆 Top 10 Global</h3>
-        <ul id="lista-ranking"><li>Carregando ranking...</li></ul>
-      </div>
-      <button class="btn-reiniciar" onclick="iniciarJogo()">JOGAR NOVAMENTE</button>
-    </div>
+  <!-- HUD -->
+  <div class="hud">
+    <div class="jogador">👤 <span id="nome-jogador">Visitante</span></div>
+    <div class="pontos">🗳️ Votos: <span id="pontos">0</span></div>
+  </div>
 
+  <!-- URNA -->
+  <div class="urna">
     <div class="tela">
       <div class="tela-titulo">ELEIÇÕES 2028</div>
       <div class="candidatos">
@@ -77,7 +101,7 @@
           <div class="numero">13</div>
         </div>
       </div>
-      <div class="tela-msg" id="tela-msg">Clique rápido!</div>
+      <div class="tela-msg" id="tela-msg">Clique para votar!</div>
     </div>
 
     <div class="teclado">
@@ -96,13 +120,19 @@
     </div>
   </div>
 
-  <!-- SCRIPT DO JOGO COMO MÓDULO PARA O FIREBASE V13 -->
-  <script type="module">
-    // Importações do Firebase v13
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-    import { getDatabase, ref, push, query, orderByChild, limitToLast, get } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
+  <!-- PLACAR GLOBAL -->
+  <div class="ranking-container">
+    <h2>🏆 Top 10 (Quem mais votou)</h2>
+    <ul id="lista-ranking">
+      <li>Carregando ranking...</li>
+    </ul>
+  </div>
 
-    // Suas chaves
+  <!-- FIREBASE V13 -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+    import { getDatabase, ref, set, onValue, query, orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
+
     const firebaseConfig = {
       apiKey: "AIzaSyC7vYemf1hXvd4Gz0QAH4v51fTFTsY6vXs",
       authDomain: "jogo-da-urna.firebaseapp.com",
@@ -113,78 +143,66 @@
       appId: "1:673785263455:web:756558d636d77749d6f2ea"
     };
 
-    // Inicializa o Firebase
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // ==========================================
-    // LÓGICA DO JOGO
-    // ==========================================
+    // Variáveis do Jogo
     const candidatos = { "Flavio Bolsonaro": { numero: "22" }, "Lula": { numero: "13" } };
-    let digitado = "", jogando = false, pontos = 0, tempo = 15, tempoTimer = null;
-    let recorde = localStorage.getItem('recorde_urna') || 0;
+    let digitado = "";
+    let pontos = 0;
+    let nomeJogador = "";
+    let idJogador = ""; // Identificador único para o banco de dados
 
-    // Deixa as funções globais para o HTML conseguir achar (onclick)
-    window.iniciarJogo = function() {
-      jogando = true; pontos = 0; tempo = 15; digitado = "";
-      document.getElementById('pontos').innerText = "0"; 
-      document.getElementById('tempo').innerText = "15"; 
-      document.getElementById('display').innerText = "--";
-      document.getElementById('tela-msg').innerText = "Clique rápido!"; 
-      document.getElementById('tela-fim').style.display = "none";
-      document.querySelectorAll('.cand').forEach(c => c.classList.remove('sel', 'ok'));
-      
-      clearInterval(tempoTimer);
-      tempoTimer = setInterval(() => { 
-        tempo--; 
-        document.getElementById('tempo').innerText = tempo; 
-        if (tempo <= 0) window.fimDeJogo(); 
-      }, 1000);
-    }
-
-    window.fimDeJogo = function() {
-      jogando = false; clearInterval(tempoTimer);
-      if (pontos > recorde) { 
-        recorde = pontos; 
-        localStorage.setItem('recorde_urna', recorde); 
-        document.getElementById('recorde').innerText = recorde; 
+    // --- TELA DE LOGIN ---
+    window.entrarNoJogo = function() {
+      const input = document.getElementById('input-nome').value.trim();
+      if (input === "") {
+        alert("Por favor, digite um nome para entrar no ranking!");
+        return;
       }
-      document.getElementById('pontos-finais').innerText = pontos;
-      document.getElementById('tela-fim').style.display = "flex"; 
-      if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 200]);
       
-      if (pontos > 0) {
-        let nomeJogador = prompt("Fim de jogo! Digite seu nome (ou apelido) para o Ranking Global:");
-        if (nomeJogador && nomeJogador.trim() !== "") {
-          window.enviarParaRanking(nomeJogador.trim(), pontos);
-        } else { window.carregarRanking(); }
-      } else { window.carregarRanking(); }
+      nomeJogador = input;
+      // Cria um ID único baseado no nome (remove acentos e espaços)
+      idJogador = nomeJogador.toLowerCase().replace(/[^a-z0-9]/g, "_");
+      
+      document.getElementById('nome-jogador').innerText = nomeJogador;
+      document.getElementById('tela-login').style.display = "none";
+      
+      // Busca os votos atuais desse jogador no Firebase
+      carregarMeusVotos();
     }
 
+    // Pressionar Enter no input de nome também entra
+    document.getElementById('input-nome').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') window.entrarNoJogo();
+    });
+
+    // --- LÓGICA DE VOTAÇÃO ---
     window.votar = function(nomeCandidato) {
-      if (!jogando) return;
       if (navigator.vibrate) navigator.vibrate(40); 
-      pontos += 10; 
+      
+      // Atualiza a tela
+      pontos += 1; 
       document.getElementById('pontos').innerText = pontos;
       
       const info = candidatos[nomeCandidato];
       document.querySelectorAll('.cand').forEach(c => c.classList.remove('sel', 'ok'));
       document.getElementById('cand-' + info.numero).classList.add('ok');
       
-      document.getElementById('tela-msg').innerText = '✅ +10 Pontos!'; 
+      document.getElementById('tela-msg').innerText = '✅ +1 Voto!'; 
       digitado = ""; 
       document.getElementById('display').innerText = '--';
       
       setTimeout(() => { 
-        if (jogando) { 
-          document.querySelectorAll('.cand').forEach(c => c.classList.remove('sel', 'ok')); 
-          document.getElementById('tela-msg').innerText = 'Clique rápido!'; 
-        } 
+        document.querySelectorAll('.cand').forEach(c => c.classList.remove('sel', 'ok')); 
+        document.getElementById('tela-msg').innerText = 'Clique para votar!'; 
       }, 200);
+
+      // Salva no Firebase
+      salvarVotosNoBanco();
     }
 
     window.digitar = function(n) { 
-      if (!jogando) return; 
       if (navigator.vibrate) navigator.vibrate(); 
       if (digitado.length >= 2) return; 
       digitado += n; 
@@ -192,7 +210,6 @@
     }
 
     window.limpar = function() { 
-      if (!jogando) return; 
       if (navigator.vibrate) navigator.vibrate(); 
       digitado = ""; 
       atualizarDisplay(); 
@@ -218,72 +235,72 @@
     }
 
     window.confirmar = function() { 
-      if (!jogando) return; 
       const nome = nomePorNumero(digitado); 
       if (nome) window.votar(nome); 
       else if (navigator.vibrate) navigator.vibrate(100); 
     }
 
-    // ==========================================
-    // LÓGICA DO RANKING (FIREBASE V13)
-    // ==========================================
-    window.enviarParaRanking = async function(nome, pontuacao) {
-      document.getElementById('lista-ranking').innerHTML = "<li>Enviando sua pontuação...</li>";
-      
-      try {
-        // Salva no Firebase sob o nó "ranking"
-        await push(ref(db, "ranking"), {
-          nome: nome,
-          pontos: pontuacao,
-          data: Date.now()
-        });
-        window.carregarRanking(); // Recarrega a lista após salvar
-      } catch (erro) {
-        console.error("Erro ao salvar:", erro);
-        document.getElementById('lista-ranking').innerHTML = "<li>Erro ao salvar. Verifique o console.</li>";
-      }
+    // --- BANCO DE DADOS FIREBASE ---
+    
+    // Salva a quantidade de votos do jogador
+    function salvarVotosNoBanco() {
+      if (!idJogador) return;
+      // Salva o nome exato e a quantidade de votos
+      set(ref(db, 'ranking/' + idJogador), {
+        nome: nomeJogador,
+        votos: pontos
+      });
     }
 
-    window.carregarRanking = async function() {
-      document.getElementById('lista-ranking').innerHTML = "<li>Carregando ranking...</li>";
-      
-      try {
-        // Busca os 10 maiores pontuadores
-        const rankingQuery = query(ref(db, 'ranking'), orderByChild('pontos'), limitToLast(10));
-        const snapshot = await get(rankingQuery);
-        
-        const listaHTML = document.getElementById('lista-ranking');
-        listaHTML.innerHTML = "";
-        
-        if (!snapshot.exists()) {
-          listaHTML.innerHTML = "<li>Nenhuma pontuação ainda. Seja o 1º!</li>";
-          return;
+    // Carrega os votos que o jogador já tinha (caso ele recarregue a página)
+    function carregarMeusVotos() {
+      const meuRef = ref(db, 'ranking/' + idJogador);
+      onValue(meuRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data && data.votos) {
+          pontos = data.votos;
+          document.getElementById('pontos').innerText = pontos;
         }
-        
-        const rankingArray = [];
-        snapshot.forEach((childSnapshot) => { rankingArray.push(childSnapshot.val()); });
-        rankingArray.reverse(); // Inverte para o maior ficar em 1º
-
-        rankingArray.forEach((jogador, index) => {
-          const li = document.createElement("li");
-          li.innerHTML = `<span class="pos">${index + 1}º</span> ${jogador.nome} <span class="pts">${jogador.pontos} pts</span>`;
-          listaHTML.appendChild(li);
-        });
-      } catch (erro) {
-        console.error("Erro ao carregar:", erro);
-        document.getElementById('lista-ranking').innerHTML = "<li>Erro ao carregar ranking.</li>";
-      }
+      }, { onlyOnce: true });
     }
 
+    // Atualiza o Top 10 em tempo real
+    const rankingRef = query(ref(db, 'ranking'), orderByChild('votos'), limitToLast(10));
+    
+    onValue(rankingRef, (snapshot) => {
+      const listaHTML = document.getElementById('lista-ranking');
+      listaHTML.innerHTML = "";
+      
+      if (!snapshot.exists()) {
+        listaHTML.innerHTML = "<li>Nenhum voto registrado ainda. Seja o 1º!</li>";
+        return;
+      }
+      
+      const rankingArray = [];
+      snapshot.forEach((childSnapshot) => { 
+        rankingArray.push(childSnapshot.val()); 
+      });
+      
+      // Inverte para o maior ficar em 1º
+      rankingArray.reverse(); 
+
+      rankingArray.forEach((jogador, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <span><span class="pos">${index + 1}º</span> ${jogador.nome}</span> 
+          <span class="pts">${jogador.votos} votos</span>
+        `;
+        listaHTML.appendChild(li);
+      });
+    });
+
+    // Atalhos de teclado
     document.addEventListener('keydown', function(event) {
-      if (!jogando) return;
+      if (document.getElementById('tela-login').style.display !== 'none') return;
       if (event.key >= '0' && event.key <= '9') window.digitar(event.key);
       else if (event.key === 'Enter') window.confirmar();
       else if (event.key === 'Backspace' || event.key === 'Escape') { event.preventDefault(); window.limpar(); }
     });
-
-    // Inicia automaticamente ao carregar a página
-    window.onload = window.iniciarJogo;
   </script>
 </body>
 </html>
