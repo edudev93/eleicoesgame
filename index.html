@@ -36,31 +36,30 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
-    /* FOTO DO CANDIDATO SOBREPOSTA */
+    /* FOTO DO CANDIDATO SOBREPOSTA (Ajustada para o bonequinho) */
     #foto-urna {
       position: absolute;
-      /* Posição ajustada para cobrir o bonequinho cinza */
-      top: 36%; 
-      left: 14%;
-      width: 18%;  /* Um pouco maior para garantir visibilidade */
-      height: 44%;
+      /* Ajustado para encaixar perfeitamente no bonequinho cinza */
+      top: 34.5%; 
+      left: 14.5%;
+      width: 14%;  
+      height: 32%;
       object-fit: cover;
-      border-radius: 4px;
-      display: none; /* Escondida no início */
-      z-index: 999;  /* Fica na frente de absolutamente tudo */
-      border: 3px solid white;
-      box-shadow: 0 0 15px rgba(0,0,0,0.8);
-      background-color: #333; /* Fundo escuro caso a foto seja transparente */
+      border-radius: 2px;
+      display: none; 
+      z-index: 999;  
+      border: 2px solid white;
+      background-color: #333; 
     }
 
     /* NOME DO CANDIDATO SOBREPOSTO */
     #nome-urna {
       position: absolute;
-      top: 42%;
-      left: 34%;
+      top: 41%;
+      left: 31%;
       width: 25%;
       color: white;
-      font-size: 1.5vw; 
+      font-size: 1.6vw; 
       font-weight: bold;
       text-align: left;
       line-height: 1.1;
@@ -69,33 +68,29 @@
       text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
     }
 
-    /* ÁREAS CLICÁVEIS INVISÍVEIS */
+    /* ÁREAS CLICÁVEIS INVISÍVEIS (Ajustadas) */
     .botao-voto {
       position: absolute;
       cursor: pointer;
       z-index: 10;
+      /* Mantenha a linha abaixo para testar. Quando estiver certo, você pode apagar! */
+      /* border: 2px dashed red; */
     }
 
     /* Área de clique da Tela Azul (Votar Flávio) */
     .area-tela {
-      top: 25%;
-      left: 15%;
-      width: 40%;
-      height: 55%;
+      top: 20%;    /* Começa no topo da moldura preta */
+      left: 11%;   /* Começa na borda esquerda da moldura */
+      width: 39%;  /* Vai até a direita da moldura */
+      height: 48%; /* Vai até o final da tela azul */
     }
 
     /* Área de clique do Teclado (Votar Lula) */
     .area-teclado {
       top: 25%;
       left: 58%;
-      width: 30%;
-      height: 45%;
-    }
-
-    /* Se você passar o mouse e ver um contorno vermelho tracejado, é o botão ali */
-    .botao-voto:hover {
-      border: 2px dashed red;
-      background: rgba(255, 0, 0, 0.1);
+      width: 28%;
+      height: 42%;
     }
 
     /* PAINEL DE CONTROLE EMBAIXO */
@@ -154,6 +149,7 @@
       font-weight: bold;
       color: #00aa00;
       text-align: center;
+      min-height: 25px;
     }
 
     @media (max-width: 600px) {
@@ -169,13 +165,13 @@
     <!-- Imagem de fundo -->
     <img class="imagem-urna" src="img/urna.png" alt="Urna Eletrônica">
     
-    <!-- Elementos que vão aparecer por cima da imagem -->
+    <!-- Foto e Nome que aparecem na tela -->
     <img id="foto-urna" src="" alt="Foto do Candidato">
     <div id="nome-urna"></div>
 
     <!-- Zonas de Clique -->
-    <div class="botao-voto area-tela" onclick="votar('Flavio Bolsonaro', 'img/flavio.png')" title="Clique aqui para votar no Flávio"></div>
-    <div class="botao-voto area-teclado" onclick="votar('Lula', 'img/lula.png')" title="Clique aqui para votar no Lula"></div>
+    <div class="botao-voto area-tela" onclick="votar('Flavio Bolsonaro', 'img/flavio.png')" title="Votar em Flávio"></div>
+    <div class="botao-voto area-teclado" onclick="votar('Lula', 'img/lula.png')" title="Votar em Lula"></div>
   </div>
 
   <!-- Painel com as fotos e contadores -->
@@ -233,12 +229,11 @@
       document.getElementById(ids[nomeCandidato]).innerText = votos[nomeCandidato];
       localStorage.setItem('votos', JSON.stringify(votos));
       
-      // Pega os elementos da tela
       const foto = document.getElementById('foto-urna');
       const nome = document.getElementById('nome-urna');
       const msg = document.getElementById('resultado');
       
-      // Mostra a foto e o nome na tela da urna
+      // Mostra a foto e o nome
       foto.src = caminhoFoto;
       foto.style.display = 'block';
       
@@ -247,7 +242,7 @@
       
       msg.innerText = `✅ Voto confirmado!`;
       
-      // Depois de 3 segundos, volta a tela ao normal
+      // Esconde após 3 segundos
       setTimeout(() => {
         foto.style.display = 'none';
         nome.style.display = 'none';
