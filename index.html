@@ -10,6 +10,8 @@
       margin: 0; 
       padding: 0; 
       -webkit-tap-highlight-color: transparent;
+      /* 🔥 IMPEDE O ZOOM DE DUPLO CLIQUE NO CELULAR 🔥 */
+      touch-action: manipulation; 
     }
 
     body {
@@ -22,6 +24,8 @@
       min-height: 100vh;
       padding: 15px;
       gap: 20px;
+      /* Impede o zoom no corpo inteiro */
+      touch-action: manipulation; 
     }
 
     /* ===== URNA ===== */
@@ -120,7 +124,7 @@
       text-align: center;
     }
 
-    /* ===== TECLADO (Computador) ===== */
+    /* ===== TECLADO ===== */
     .teclado {
       background: #2b3340;
       border-radius: 8px;
@@ -160,6 +164,7 @@
       cursor: pointer;
       box-shadow: 0 2px 0 #111;
       user-select: none;
+      touch-action: manipulation;
     }
     .tecla:active { transform: translateY(2px); box-shadow: none; background: #1f2329; }
     .tecla.zero { grid-column: 2; }
@@ -180,6 +185,7 @@
       cursor: pointer;
       box-shadow: 0 2px 0 rgba(0,0,0,.5);
       user-select: none;
+      touch-action: manipulation;
     }
     .acao:active { transform: translateY(2px); box-shadow: none; }
     .branco    { background: #f2f2f2; color: #222; }
@@ -209,6 +215,7 @@
       cursor: pointer;
       border: 2px solid transparent;
       transition: border .2s;
+      touch-action: manipulation;
     }
     .candidato-info:hover { border-color: #007bff; }
     .candidato-info:active { transform: scale(0.98); }
@@ -249,13 +256,13 @@
       .urna {
         grid-template-columns: 1fr;
         padding: 15px;
-        gap: 10px; /* Diminui o espaço entre a tela e o teclado */
+        gap: 10px; 
         margin-top: 0;
         margin-bottom: 0;
       }
 
       .tela {
-        min-height: 75vw; /* Reduzi um pouco para caber melhor */
+        min-height: 75vw; 
       }
 
       .tela-titulo { font-size: 4vw; text-align: center; }
@@ -263,32 +270,31 @@
       .cand .numero { font-size: 6vw; }
       .tela-msg { font-size: 3.5vw; margin-top: 5px; }
 
-      /* 🔥 AQUI O TECLADO FICA MENOR 🔥 */
       .teclado {
-        padding: 10px; /* Reduz a borda escura ao redor do teclado */
-        gap: 8px;      /* Reduz o espaço entre display, teclas e botões */
+        padding: 10px; 
+        gap: 8px;      
       }
 
       .display { 
-        font-size: 5vw;     /* Números do visor menores */
-        min-height: 8vw;    /* Altura do visor menor */
+        font-size: 5vw;     
+        min-height: 8vw;    
         padding: 4px; 
         letter-spacing: 0.5vw;
       }
 
-      .grade { gap: 6px; }  /* Espaço entre as teclas */
+      .grade { gap: 6px; }  
 
       .tecla { 
-        font-size: 4vw;     /* Números das teclas menores */
-        padding: 2vw 0;     /* Altura dos botões reduzida */
+        font-size: 4vw;     
+        padding: 2vw 0;     
         border-radius: 6px;
       }
       
       .acoes { gap: 6px; }
 
       .acao { 
-        font-size: 2.5vw;   /* Texto BRANCO, CORRIGE, CONFIRMA menor */
-        padding: 2.5vw 0;   /* Altura dos botões de ação reduzida */
+        font-size: 2.5vw;   
+        padding: 2.5vw 0;   
         border-radius: 6px;
       }
       
