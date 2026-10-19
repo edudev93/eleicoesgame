@@ -13,19 +13,21 @@
 
     body {
       font-family: Arial, sans-serif;
-      background: #e0e0e0; /* Fundo cinza claro para destacar a urna branca */
+      background: #e0e0e0; /* Fundo cinza claro */
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       padding: 20px;
     }
 
-    /* Container que segura a imagem e os botões sobrepostos */
+    /* Área da Urna */
     .urna-container {
       position: relative;
       width: 100%;
-      max-width: 800px; /* Tamanho máximo da urna na tela */
+      max-width: 800px;
+      margin-bottom: 30px;
     }
 
     .imagem-urna {
@@ -36,95 +38,130 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
-    /* 
-      Áreas clicáveis invisíveis 
-      Você pode ajustar o top, left, width e height em % para encaixar perfeitamente na sua imagem.
-      Fiz uma estimativa baseada na imagem que você enviou.
-    */
+    /* Botões invisíveis sobre a urna */
     .botao-voto {
       position: absolute;
       cursor: pointer;
       transition: background 0.2s;
       border-radius: 8px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-      font-weight: bold;
     }
 
     /* Área da Tela Azul (Flávio) */
     .area-tela {
-      top: 38%;
-      left: 13%;
-      width: 33%;
-      height: 40%;
+      top: 22%;
+      left: 16%;
+      width: 41%;
+      height: 50%;
     }
 
     /* Área do Teclado (Lula) */
     .area-teclado {
-      top: 38%;
+      top: 25%;
       left: 58%;
       width: 25%;
       height: 40%;
     }
 
+    /* Efeito ao passar o mouse para você ver onde está clicando */
     .botao-voto:hover {
-      background: rgba(255, 255, 255, 0.15); /* Brilho sutil ao passar o mouse */
-      border: 2px dashed rgba(255,255,255,0.5);
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px dashed rgba(0,0,0,0.3);
     }
 
-    /* Contador que aparece em cima do botão */
-    .contador-oculto {
-      position: absolute;
-      bottom: -40px; /* Joga o contador para baixo da urna para não tampar a imagem */
+    /* Seção dos Candidatos (Abaixo da urna) */
+    .candidatos-fotos {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .candidato {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .candidato:hover {
+      transform: scale(1.05);
+    }
+
+    .foto {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 4px solid #444;
+      margin-bottom: 10px;
+      background-color: #ccc;
+    }
+
+    .nome {
       font-size: 18px;
+      font-weight: bold;
       color: #333;
-      text-shadow: none;
-      width: 100%;
-      text-align: center;
-      white-space: nowrap;
+    }
+
+    .contador {
+      font-size: 16px;
+      font-weight: bold;
+      color: #1a1a2e;
+      margin-top: 5px;
+    }
+
+    .contador span {
+      font-size: 22px;
+      color: #007bff;
     }
 
     #resultado {
-      position: absolute;
-      bottom: -80px;
-      width: 100%;
-      text-align: center;
+      margin-top: 30px;
       font-size: 22px;
       font-weight: bold;
-      color: #1a1a2e;
+      color: #00aa00;
+      min-height: 30px;
     }
 
     /* Responsividade para celular */
     @media (max-width: 600px) {
-      .contador-oculto { font-size: 12px; bottom: -30px; }
-      #resultado { font-size: 16px; bottom: -60px; }
+      .candidatos-fotos { gap: 30px; }
+      .foto { width: 90px; height: 90px; }
+      .nome { font-size: 14px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Área da Urna com os botões clicáveis invisíveis -->
   <div class="urna-container">
-    <!-- Aqui entra a sua imagem (lembre-se de salvar como urna.png na pasta img) -->
     <img class="imagem-urna" src="img/urna.png" alt="Urna Eletrônica">
-
-    <!-- Área clicável em cima da Tela Azul -->
-    <div class="botao-voto area-tela" onclick="votar('Flavio Bolsonaro')">
-      <!-- Contador exibido logo abaixo da urna -->
-      <div class="contador-oculto">Votos Flávio: <span id="votos-flavio" style="color: #00d4ff;">0</span></div>
-    </div>
-
-    <!-- Área clicável em cima do Teclado -->
-    <div class="botao-voto area-teclado" onclick="votar('Lula')">
-      <div class="contador-oculto">Votos Lula: <span id="votos-lula" style="color: #00ff88;">0</span></div>
-    </div>
-
-    <!-- Mensagem de confirmação -->
-    <div id="resultado"></div>
+    
+    <!-- Botão invisível na tela da urna -->
+    <div class="botao-voto area-tela" onclick="votar('Flavio Bolsonaro')" title="Votar em Flávio"></div>
+    
+    <!-- Botão invisível no teclado da urna -->
+    <div class="botao-voto area-teclado" onclick="votar('Lula')" title="Votar em Lula"></div>
   </div>
+
+  <!-- Fotos e contadores visíveis abaixo da urna -->
+  <div class="candidatos-fotos">
+    <div class="candidato" onclick="votar('Flavio Bolsonaro')">
+      <img class="foto" src="img/flavio.png" alt="Flavio Bolsonaro">
+      <div class="nome">Flavio Bolsonaro</div>
+      <div class="contador">Votos: <span id="votos-flavio">0</span></div>
+    </div>
+
+    <div class="candidato" onclick="votar('Lula')">
+      <img class="foto" src="img/lula.png" alt="Lula">
+      <div class="nome">Lula</div>
+      <div class="contador">Votos: <span id="votos-lula">0</span></div>
+    </div>
+  </div>
+
+  <div id="resultado"></div>
 
   <script>
     let votos = {
@@ -162,7 +199,6 @@
       let msg = document.getElementById('resultado');
       msg.innerText = `✅ Voto computado para: ${nomeCandidato}`;
       
-      // Efeito para a mensagem sumir depois de 2 segundos
       setTimeout(() => { msg.innerText = ''; }, 2000);
     }
   </script>
