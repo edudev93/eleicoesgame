@@ -8,12 +8,12 @@
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
     body { font-family: Arial, sans-serif; background: #2c3e50; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; padding: 15px; gap: 15px; overflow-x: hidden; }
     
-    /* ===== TELA DE ENTRADA (LOGIN COM FUNDO) ===== */
+    /* ===== TELA DE ENTRADA (LOGIN) ===== */
     .tela-login { 
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
       
-      /* FUNDO: A imagem da urna */
-      background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('img/urna.png');
+      /* Fundo com a imagem dos candidatos */
+      background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('img/fundo.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -35,6 +35,15 @@
       flex-direction: column;
       align-items: center;
       border: 2px solid #f1c40f;
+    }
+
+    /* 🖼️ AQUI ESTÁ A FOTO DA URNA PEQUENA */
+    .logo-urna {
+      width: 80px; /* Tamanho pequeno */
+      height: auto;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
 
     .tela-login h1 { font-size: 32px; margin-bottom: 10px; color: #f1c40f; text-shadow: 1px 1px 3px black; }
@@ -134,6 +143,10 @@
   <!-- TELA INICIAL (LOGIN) -->
   <div class="tela-login" id="tela-login">
     <div class="login-box">
+      
+      <!-- 🖼️ AQUI ESTÁ A FOTO DA URNA (PEQUENA) -->
+      <img src="img/urna.png" alt="Urna Eletrônica" class="logo-urna">
+      
       <h1>🗳️ Vote</h1>
       <p>Preencha seus dados para entrar no Ranking:</p>
       <input type="text" id="input-nome" placeholder="Seu nome ou apelido" maxlength="15">
