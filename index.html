@@ -8,12 +8,42 @@
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
     body { font-family: Arial, sans-serif; background: #2c3e50; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; padding: 15px; gap: 15px; overflow-x: hidden; }
     
-    /* ===== TELA DE ENTRADA (LOGIN) ===== */
-    .tela-login { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2c3e50; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; padding: 20px; }
-    .tela-login h1 { font-size: 28px; margin-bottom: 10px; color: #f1c40f; }
-    .tela-login p { font-size: 16px; margin-bottom: 20px; color: #ccc; }
-    .tela-login input { padding: 15px; font-size: 18px; border-radius: 8px; border: none; width: 100%; max-width: 300px; margin-bottom: 15px; text-align: center; background: #fff; color: #333; }
-    .tela-login button { padding: 15px 40px; font-size: 18px; font-weight: bold; background: #2ecc71; color: #000; border: none; border-radius: 8px; cursor: pointer; width: 100%; max-width: 300px; transition: 0.2s; }
+    /* ===== TELA DE ENTRADA (LOGIN COM FUNDO) ===== */
+    .tela-login { 
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+      
+      /* FUNDO VERMELHO DE TESTE: Se aparecer vermelho, a imagem não foi encontrada */
+      background-color: #ff0000; 
+      
+      /* A IMAGEM DE FUNDO */
+      background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('img/fundo.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      
+      z-index: 1000; 
+      display: flex; flex-direction: column; align-items: center; justify-content: center; 
+      color: white; text-align: center; padding: 20px; 
+    }
+    
+    /* Caixa semi-transparente escura para os textos ficarem legíveis */
+    .login-box {
+      background: rgba(26, 37, 47, 0.85);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      width: 100%;
+      max-width: 350px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 2px solid #f1c40f;
+    }
+
+    .tela-login h1 { font-size: 28px; margin-bottom: 10px; color: #f1c40f; text-shadow: 1px 1px 3px black; }
+    .tela-login p { font-size: 16px; margin-bottom: 20px; color: #eee; }
+    .tela-login input { padding: 15px; font-size: 18px; border-radius: 8px; border: none; width: 100%; margin-bottom: 15px; text-align: center; background: #fff; color: #333; }
+    .tela-login button { padding: 15px 40px; font-size: 18px; font-weight: bold; background: #2ecc71; color: #000; border: none; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.2s; }
     .tela-login button:hover { background: #27ae60; transform: scale(1.02); }
 
     /* ===== HUD ===== */
@@ -63,14 +93,12 @@
     .box-resultado { flex: 1; min-width: 300px; background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     .box-resultado h2 { font-size: 18px; color: #333; margin-bottom: 15px; text-align: center; border-bottom: 2px solid #eee; padding-bottom: 10px; }
     
-    /* Placar Geral (Candidatos) */
     .placar-candidato { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; font-size: 18px; font-weight: bold; color: #333; }
     .placar-candidato .nome-cand { display: flex; align-items: center; gap: 10px; }
     .placar-candidato .num-total { font-size: 22px; padding: 5px 15px; border-radius: 20px; }
     .barra-progresso { width: 100%; height: 12px; background: #eee; border-radius: 6px; margin-top: 5px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); }
     .barra-preenchida { height: 100%; width: 0%; transition: width 0.5s; }
 
-    /* Top Jogadores */
     .ranking-container ul { list-style: none; }
     .ranking-container li { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 16px; color: #333; display: flex; justify-content: space-between; align-items: center; }
     .ranking-container li:last-child { border-bottom: none; }
@@ -78,7 +106,6 @@
     .ranking-container .estado-tag { font-size: 11px; background: #3498db; color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px; vertical-align: middle; font-weight: bold; }
     .ranking-container .pts { font-weight: bold; color: #2ecc71; }
     
-    /* Botão Ver Mais */
     .btn-ver-mais { display: block; width: 100%; padding: 12px; margin-top: 15px; background: #f39c12; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; transition: 0.2s; }
     .btn-ver-mais:hover { background: #d68910; }
 
@@ -109,11 +136,13 @@
 
   <!-- TELA INICIAL (LOGIN) -->
   <div class="tela-login" id="tela-login">
-    <h1>🗳️ Urna Global</h1>
-    <p>Preencha seus dados para entrar no Ranking:</p>
-    <input type="text" id="input-nome" placeholder="Seu nome ou apelido" maxlength="15">
-    <input type="text" id="input-local" placeholder="De onde você está votando?" maxlength="20">
-    <button onclick="entrarNoJogo()">ENTRAR E VOTAR</button>
+    <div class="login-box">
+      <h1>🗳️ Urna Global</h1>
+      <p>Preencha seus dados para entrar no Ranking:</p>
+      <input type="text" id="input-nome" placeholder="Seu nome ou apelido" maxlength="15">
+      <input type="text" id="input-local" placeholder="De onde você está votando?" maxlength="20">
+      <button onclick="entrarNoJogo()">ENTRAR E VOTAR</button>
+    </div>
   </div>
 
   <!-- TELA DE VOTAÇÃO ENCERRADA -->
@@ -447,55 +476,4 @@
         votos: pontos
       });
 
-      runTransaction(ref(db, 'total_eleicao/' + info.dbKey), (votosAtuais) => {
-        return (votosAtuais || 0) + 1;
-      });
-    }
-
-    function carregarMeusVotos() {
-      const meuRef = ref(db, 'ranking/' + idJogador);
-      get(meuRef).then((snapshot) => {
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          pontos = data.votos;
-          document.getElementById('pontos').innerText = pontos;
-        }
-      });
-    }
-
-    // --- RESULTADO FINAL (TELA ENCERRADA) ---
-    function carregarResultadoFinal() {
-      const listaCand = document.getElementById('final-candidatos');
-      listaCand.innerHTML = `
-        <li><span style="color: #00FF00;">Flavio Bolsonaro</span> <strong>${totalFlavio} votos</strong></li>
-        <li><span style="color: #ff4d4d;">Lula</span> <strong>${totalLula} votos</strong></li>
-        <li style="border: none; margin-top: 10px; font-weight: bold; color: #f1c40f;">
-          <span>TOTAL GERAL</span> <span>${totalFlavio + totalLula} votos</span>
-        </li>
-      `;
-
-      const listaJogadores = document.getElementById('final-jogadores');
-      listaJogadores.innerHTML = "";
-
-      if (rankingGlobal.length === 0) {
-        listaJogadores.innerHTML = "<li>Nenhum voto computado.</li>";
-        return;
-      }
-
-      rankingGlobal.forEach((jogador, index) => {
-        const li = document.createElement("li");
-        li.innerHTML = `<span>${index + 1}º - ${jogador.nome} (${jogador.local})</span> <strong>${jogador.votos}</strong>`;
-        listaJogadores.appendChild(li);
-      });
-    }
-
-    // Atalhos de teclado
-    document.addEventListener('keydown', function(event) {
-      if (document.getElementById('tela-login').style.display !== 'none' || !jogoAtivo) return;
-      if (event.key >= '0' && event.key <= '9') window.digitar(event.key);
-      else if (event.key === 'Enter') window.confirmar();
-      else if (event.key === 'Backspace' || event.key === 'Escape') { event.preventDefault(); window.limpar(); }
-    });
-  </script>
-</body>
-</html>
+      runTransaction(ref(db, 'total_eleicao/'
