@@ -11,16 +11,11 @@
     /* ===== TELA DE ENTRADA (LOGIN COM FUNDO) ===== */
     .tela-login { 
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-      
-      /* FUNDO VERMELHO DE TESTE: Se aparecer vermelho, a imagem não foi encontrada */
-      background-color: #ff0000; 
-      
-      /* A IMAGEM DE FUNDO */
-      background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('img/fundo.jpg');
+      /* AQUI ESTÁ A SUA IMAGEM DE FUNDO */
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('img/fundo.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      
       z-index: 1000; 
       display: flex; flex-direction: column; align-items: center; justify-content: center; 
       color: white; text-align: center; padding: 20px; 
@@ -476,4 +471,55 @@
         votos: pontos
       });
 
-      runTransaction(ref(db, 'total_eleicao/'
+      runTransaction(ref(db, 'total_eleicao/' + info.dbKey), (votosAtuais) => {
+        return (votosAtuais || 0) + 1;
+      });
+    }
+
+    function carregarMeusVotos() {
+      const meuRef = ref(db, 'ranking/' + idJogador);
+      get(meuRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          pontos = data.votos;
+          document.getElementById('pontos').innerText = pontos;
+        }
+      });
+    }
+
+    // --- RESULTADO FINAL (TELA ENCERRADA) ---
+    function carregarResultadoFinal() {
+      const listaCand = document.getElementById('final-candidatos');
+      listaCand.innerHTML = `
+        <li><span style="color: #00FF00;">Flavio Bolsonaro</span> <strong>${totalFlavio} votos</strong></li>
+        <li><span style="color: #ff4d4d;">Lula</span> <strong>${totalLula} votos</strong></li>
+        <li style="border: none; margin-top: 10px; font-weight: bold; color: #f1c40f;">
+          <span>TOTAL GERAL</span> <span>${totalFlavio + totalLula} votos</span>
+        </li>
+      `;
+
+      const listaJogadores = document.getElementById('final-jogadores');
+      listaJogadores.innerHTML = "";
+
+      if (rankingGlobal.length === 0) {
+        listaJogadores.innerHTML = "<li>Nenhum voto computado.</li>";
+        return;
+      }
+
+      rankingGlobal.forEach((jogador, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span>${index + 1}º - ${jogador.nome} (${jogador.local})</span> <strong>${jogador.votos}</strong>`;
+        listaJogadores.appendChild(li);
+      });
+    }
+
+    // Atalhos de teclado
+    document.addEventListener('keydown', function(event) {
+      if (document.getElementById('tela-login').style.display !== 'none' || !jogoAtivo) return;
+      if (event.key >= '0' && event.key <= '9') window.digitar(event.key);
+      else if (event.key === 'Enter') window.confirmar();
+      else if (event.key === 'Backspace' || event.key === 'Escape') { event.preventDefault(); window.limpar(); }
+    });
+  </script>
+</body>
+</html>
